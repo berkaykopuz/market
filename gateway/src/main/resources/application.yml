@@ -1,0 +1,24 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  cloud:
+    gateway:
+      routes:
+        - id: registration
+          uri: lb://registration
+          predicates:
+            - Path=/auth/**
+      discovery:
+        locator:
+          enabled: true
+server:
+  port: 8088
+
+spring:
+  application:
+    name: gateway
+  config:
+    import: optional:configserver:http://localhost:8888
