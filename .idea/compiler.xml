@@ -6,10 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="authorization" />
         <module name="config-server" />
         <module name="product" />
         <module name="user-management" />
-        <module name="registration" />
         <module name="selling" />
         <module name="eureka-server" />
         <module name="gateway" />
@@ -18,11 +18,11 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="authorization" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="product" options="-parameters" />
-      <module name="registration" options="-parameters" />
       <module name="selling" options="-parameters" />
       <module name="user-management" options="-parameters" />
     </option>

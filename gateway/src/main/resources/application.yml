@@ -11,6 +11,10 @@ eureka:
           uri: lb://registration
           predicates:
             - Path=/auth/**
+        - id: user-management
+          uri: lb://user-management
+          predicates:
+            - Path=/users/**
       discovery:
         locator:
           enabled: true

@@ -11,7 +11,8 @@ public class RouteValidator {
     public static final List<String> openApiEndpoints = List.of(
             "/auth/token",
             "/auth/validate", //can delete
-            "/eureka"
+            "/eureka",
+            "/users"
     );
 
     public Predicate<ServerHttpRequest> isSecured =
