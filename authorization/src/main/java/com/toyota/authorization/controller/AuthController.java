@@ -20,7 +20,8 @@ public class AuthController {
 
     @PostMapping("/token")
     public String getToken(@RequestBody LoginDto loginDto) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+        Authentication authenticate = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         if (authenticate.isAuthenticated()) {
             return authService.generateToken(loginDto.getUsername());
         } else {

@@ -3,26 +3,29 @@ eureka:
     hostname: localhost
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
-  cloud:
-    gateway:
-      routes:
-        - id: registration
-          uri: lb://registration
-          predicates:
-            - Path=/auth/**
-        - id: user-management
-          uri: lb://user-management
-          predicates:
-            - Path=/users/**
-      discovery:
-        locator:
-          enabled: true
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+
 server:
   port: 8088
 
 spring:
   application:
     name: gateway
-  config:
-    import: optional:configserver:http://localhost:8888
+  cloud:
+    gateway:
+      routes:
+        - id: authorization
+          uri: lb://authorization
+          predicates:
+            - Path=/auth/**
+
+        - id: user-management
+          uri: lb://user-management
+          predicates:
+            - Path=/users/**
+          filters:
+            - UserManagementFilter
+      discovery:
+        locator:
+          enabled: true
+

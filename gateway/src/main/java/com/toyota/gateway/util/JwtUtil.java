@@ -1,7 +1,6 @@
 package com.toyota.gateway.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,12 +12,13 @@ import static com.toyota.gateway.constant.Constant.SECRET;
 public class JwtUtil {
 
     public boolean validateToken(final String token) {
-        try{
+        try {
             Jwts.parserBuilder().setSigningKey(SECRET).build().parseClaimsJws(token);
             return true;
-        }
-        catch(Exception e){
-            throw new RuntimeException(e);
+        } catch (ExpiredJwtException e) {
+            throw new RuntimeException("Expired token");
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+            throw new RuntimeException("Invalid token");
         }
     }
 
