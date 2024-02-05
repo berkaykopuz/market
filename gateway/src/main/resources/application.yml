@@ -25,6 +25,11 @@ spring:
             - Path=/users/**
           filters:
             - UserManagementFilter
+
+        - id: product
+          uri: lb://product
+          predicates:
+            - Path=/product/**
       discovery:
         locator:
           enabled: true

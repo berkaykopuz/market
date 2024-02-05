@@ -41,8 +41,6 @@ public class UserManagementFilter extends AbstractGatewayFilterFactory<UserManag
                         throw new NotFoundException("user does not have ADMIN role");
                     }
 
-
-
                 } catch (Exception e) {
                     System.out.println("invalid access...!");
                     throw e;
