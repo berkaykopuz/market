@@ -3,6 +3,7 @@ package com.toyota.usermanagement.service;
 import com.toyota.usermanagement.dto.UserDto;
 import com.toyota.usermanagement.entity.Role;
 import com.toyota.usermanagement.entity.User;
+import com.toyota.usermanagement.exception.NotFoundException;
 import com.toyota.usermanagement.repository.RoleRepository;
 import com.toyota.usermanagement.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +41,7 @@ public class UserService{
         user.setPassword(encodedPassword);
 
         Role roles = roleRepository.findByRolename(rolename)
-                .orElseThrow(() -> new RuntimeException("Role not found: " + rolename));
+                .orElseThrow(() -> new NotFoundException("Role not found: " + rolename));
         user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);
@@ -63,14 +64,14 @@ public class UserService{
     }
 
     public UserDto getUserById(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found."));
+        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found."));
 
         return UserDto.convert(user);
 
     }
 
     public UserDto updateUser(UserDto userDto, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found."));
+        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found."));
 
         user.setUsername(userDto.username());
         user.setPassword(encoder.encode(userDto.password()));

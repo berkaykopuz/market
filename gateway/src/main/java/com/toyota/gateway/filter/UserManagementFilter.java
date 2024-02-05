@@ -1,6 +1,7 @@
 package com.toyota.gateway.filter;
 
 
+import com.toyota.gateway.exception.UnauthorizedException;
 import com.toyota.gateway.util.JwtUtil;
 import jakarta.ws.rs.NotFoundException;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -24,7 +25,7 @@ public class UserManagementFilter extends AbstractGatewayFilterFactory<UserManag
         return ((exchange, chain) -> {
             if (validator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    throw new NotFoundException("missing authorization header");
+                    throw new UnauthorizedException("Missing authorization header. Access denied");
                 }
 
                 String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
@@ -38,7 +39,7 @@ public class UserManagementFilter extends AbstractGatewayFilterFactory<UserManag
 
                     // check if user has ADMIN role
                     if (!jwtUtil.getRolesFromToken(authHeader).contains("ADMIN")) {
-                        throw new NotFoundException("user does not have ADMIN role");
+                        throw new UnauthorizedException("User does not have ADMIN role. Access denied");
                     }
 
                 } catch (Exception e) {

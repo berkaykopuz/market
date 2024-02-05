@@ -2,11 +2,11 @@ package com.toyota.product.service;
 
 import com.toyota.product.dto.ProductDto;
 import com.toyota.product.entity.Product;
+import com.toyota.product.exception.ProductNotFoundException;
 import com.toyota.product.repository.ProductRepository;
-import jakarta.ws.rs.NotFoundException;
+
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class ProductService {
 
     public ProductDto getProductById(Long productId){
         Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new NotFoundException("product not found with id: " + productId));
+                .orElseThrow(()-> new ProductNotFoundException("product not found with id: " + productId));
 
         return ProductDto.convert(product);
     }
@@ -60,7 +60,7 @@ public class ProductService {
         }
 
         else{
-            throw new NotFoundException("Product not found with id: " + productId);
+            throw new ProductNotFoundException("Product not found with id: " + productId);
         }
     }
 
