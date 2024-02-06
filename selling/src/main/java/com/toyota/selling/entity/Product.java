@@ -14,7 +14,7 @@ public class Product {
 
     private String name;
 
-    private int amount;
+    private Integer amount;
 
     private Long price;
     private String category;
@@ -26,6 +26,14 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "sale_id"))
     private Set<Sale> sales;
+
+    @ManyToMany
+    @JoinTable(
+            name = "products_campaigns",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "campaign_id"))
+    )
+    private Set<Campaign> campaigns;
 
     public Product() {
     }

@@ -7,7 +7,7 @@ import java.util.Date;
 
 public record ProductDto(Long id,
         String name,
-        int amount,
+        Integer amount,
         Long price,
         String category,
                          LocalDateTime updatedDate)

@@ -2,6 +2,7 @@ package com.toyota.product.service;
 
 import com.toyota.product.dto.ProductDto;
 import com.toyota.product.entity.Product;
+import com.toyota.product.exception.BadProductRequestException;
 import com.toyota.product.exception.ProductNotFoundException;
 import com.toyota.product.repository.ProductRepository;
 
@@ -32,6 +33,21 @@ public class ProductService {
     }
 
     public ProductDto createProduct(ProductDto productDto){
+        if (    productDto.name() == null ||
+                productDto.amount() == null ||
+                productDto.price() == null ||
+                productDto.category() == null) {
+            throw new BadProductRequestException("Invalid product data. All fields are required.");
+        }
+
+        if (    productDto.name().isEmpty() ||
+                productDto.amount() <= 0 ||
+                productDto.price() <= 0 ||
+                productDto.category().isEmpty()) {
+            throw new BadProductRequestException("Invalid product data. All fields must be valid.");
+        }
+
+
         Product product = new Product();
         product.setName(productDto.name());
         product.setAmount(productDto.amount());
@@ -43,6 +59,20 @@ public class ProductService {
     }
 
     public ProductDto updateProduct(Long productId, ProductDto updatedProductDto){
+        if (    updatedProductDto.name() == null ||
+                updatedProductDto.amount() == null ||
+                updatedProductDto.price() == null ||
+                updatedProductDto.category() == null) {
+            throw new BadProductRequestException("Invalid product data. All fields are required.");
+        }
+
+        if (    updatedProductDto.name().isEmpty() ||
+                updatedProductDto.amount() <= 0 ||
+                updatedProductDto.price() <= 0 ||
+                updatedProductDto.category().isEmpty()) {
+            throw new BadProductRequestException("Invalid product data. All fields must be valid.");
+        }
+
         Optional<Product> product = productRepository.findById(productId);
 
         if(product.isPresent()){

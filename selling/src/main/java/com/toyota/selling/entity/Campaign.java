@@ -1,12 +1,12 @@
 package com.toyota.selling.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
+@Entity
+@Table(name="campaigns")
 public class Campaign {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,8 +15,9 @@ public class Campaign {
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private List<Product> discountedProducts;
-    private int requiredQuantity;
-    private int discountQuantity;
-    private double discountAmount;
+    @ManyToMany(mappedBy = "products_campaigns")
+    private Set<Product> discountedProducts;
+    private Integer requiredQuantity;
+    private Integer discountQuantity;
+    private Double discountAmount;
 }

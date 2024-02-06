@@ -13,9 +13,9 @@ public class Sale {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String billId;
-    private double totalAmount;
-    private double discount;
-    private double paidAmount;
+    private Double totalAmount;
+    private Double discount;
+    private Double paidAmount;
     private LocalDateTime saleDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;

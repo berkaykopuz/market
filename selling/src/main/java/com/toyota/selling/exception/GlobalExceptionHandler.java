@@ -1,4 +1,4 @@
-package com.toyota.product.exception;
+package com.toyota.selling.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
