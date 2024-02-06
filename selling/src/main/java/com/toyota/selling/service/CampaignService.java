@@ -23,9 +23,8 @@ public class CampaignService {
 
     public CampaignDto createProduct(CampaignDto campaignDto){
         if (    campaignDto.name() == null ||
-                campaignDto.discountQuantity() == null ||
-                campaignDto.discountAmount() == null ||
-                campaignDto.requiredQuantity() == null ||
+                campaignDto.campaignType() == null ||
+                campaignDto.discountRate() == null ||
                 campaignDto.startDate() == null ||
                 campaignDto.endDate() == null
         ) {
@@ -33,9 +32,8 @@ public class CampaignService {
         }
 
         if (    campaignDto.name().isEmpty() ||
-                campaignDto.discountQuantity() < 0||
-                campaignDto.discountAmount() < 0 ||
-                campaignDto.requiredQuantity() < 0
+                campaignDto.campaignType().name().isEmpty() ||
+                campaignDto.discountRate() < 0 // maybe should add date check(mustn't before now)
         ) {
             throw new BadCampaignRequestException("Invalid campaign data. All fields must be valid.");
         }
@@ -43,11 +41,10 @@ public class CampaignService {
 
         Campaign campaign = new Campaign();
         campaign.setName(campaignDto.name());
-        campaign.setDiscountQuantity(campaignDto.discountQuantity());
-        campaign.setRequiredQuantity(campaignDto.requiredQuantity());
-        campaign.setDiscountAmount(campaignDto.discountAmount());
         campaign.setStartDate(campaignDto.startDate());
         campaign.setEndDate(campaignDto.endDate());
+        campaign.setCampaignType(campaignDto.campaignType());
+        campaign.setDiscountRate(campaignDto.discountRate());
 
         return CampaignDto.convert(campaignRepository.save(campaign));
     }

@@ -14,11 +14,19 @@ public class Campaign {
     private String name;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Integer requiredQuantity;
-    private Integer discountQuantity;
-    private Double discountAmount;
+    @Enumerated(EnumType.STRING)
+    private CampaignType campaignType;
+    private Double discountRate;
 
     public Campaign() {
+    }
+
+    public CampaignType getCampaignType() {
+        return campaignType;
+    }
+
+    public void setCampaignType(CampaignType campaignType) {
+        this.campaignType = campaignType;
     }
 
     public Long getId() {
@@ -53,27 +61,11 @@ public class Campaign {
         this.endDate = endDate;
     }
 
-    public Integer getRequiredQuantity() {
-        return requiredQuantity;
+    public Double getDiscountRate() {
+        return discountRate;
     }
 
-    public void setRequiredQuantity(Integer requiredQuantity) {
-        this.requiredQuantity = requiredQuantity;
-    }
-
-    public Integer getDiscountQuantity() {
-        return discountQuantity;
-    }
-
-    public void setDiscountQuantity(Integer discountQuantity) {
-        this.discountQuantity = discountQuantity;
-    }
-
-    public Double getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public void setDiscountAmount(Double discountAmount) {
-        this.discountAmount = discountAmount;
+    public void setDiscountRate(Double discountRate) {
+        this.discountRate = discountRate;
     }
 }
