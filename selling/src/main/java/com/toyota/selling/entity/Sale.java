@@ -19,7 +19,12 @@ public class Sale {
     private LocalDateTime saleDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-    @ManyToMany(mappedBy = "sales", fetch = FetchType.EAGER)
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "sales_products",
+            joinColumns = @JoinColumn(name = "sale_id", referencedColumnName = "billId"),
+            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private Set<Product> products = new HashSet<>();
     public Sale() {
     }

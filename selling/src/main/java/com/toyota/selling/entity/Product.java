@@ -20,12 +20,7 @@ public class Product {
     private String category;
 
     private LocalDateTime updatedDate;
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name = "products_sales",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "sale_id", referencedColumnName = "billId"))
+    @ManyToMany(mappedBy = "products")
     private Set<Sale> sales;
 
     public Product() {

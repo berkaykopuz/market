@@ -1,5 +1,6 @@
 package com.toyota.selling.controller;
 
+import com.toyota.selling.dto.SaleDto;
 import com.toyota.selling.dto.SaleRequest;
 import com.toyota.selling.dto.SaleRequestBody;
 import com.toyota.selling.entity.PaymentMethod;
@@ -21,7 +22,7 @@ public class SellingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sale>> getAllSales(){
+    public ResponseEntity<List<SaleDto>> getAllSales(){
         return new ResponseEntity<>(sellingService.getAllSales(), HttpStatus.OK);
     }
 

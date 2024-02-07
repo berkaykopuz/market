@@ -1,5 +1,6 @@
 package com.toyota.selling.service;
 
+import com.toyota.selling.dto.SaleDto;
 import com.toyota.selling.dto.SaleRequest;
 import com.toyota.selling.entity.Campaign;
 import com.toyota.selling.entity.PaymentMethod;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.toyota.selling.entity.CampaignType.BUY_TWO_GET_ONE_FREE;
 import static com.toyota.selling.entity.CampaignType.FLAT_DISCOUNT;
@@ -116,7 +118,7 @@ public class SellingService {
         return price;
     }
 
-    public List<Sale> getAllSales(){
-        return saleRepository.findAll();
+    public List<SaleDto> getAllSales(){
+        return saleRepository.findAll().stream().map(SaleDto::convert).collect(Collectors.toList());
     }
 }
