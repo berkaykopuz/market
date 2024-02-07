@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,8 +19,8 @@ public class Sale {
     private LocalDateTime saleDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-    @ManyToMany(mappedBy = "sales")
-    private Set<Product> products;
+    @ManyToMany(mappedBy = "sales", fetch = FetchType.EAGER)
+    private Set<Product> products = new HashSet<>();
     public Sale() {
     }
 

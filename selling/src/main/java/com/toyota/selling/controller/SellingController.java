@@ -3,6 +3,7 @@ package com.toyota.selling.controller;
 import com.toyota.selling.dto.SaleRequest;
 import com.toyota.selling.dto.SaleRequestBody;
 import com.toyota.selling.entity.PaymentMethod;
+import com.toyota.selling.entity.Sale;
 import com.toyota.selling.service.SellingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,10 @@ public class SellingController {
         this.sellingService = sellingService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<Sale>> getAllSales(){
+        return new ResponseEntity<>(sellingService.getAllSales(), HttpStatus.OK);
+    }
 
     @PostMapping("makesale")
     public ResponseEntity<String> makeSale(@RequestBody SaleRequestBody body){

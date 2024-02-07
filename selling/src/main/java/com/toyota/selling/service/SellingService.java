@@ -58,10 +58,14 @@ public class SellingService {
                         case BUY_TWO_GET_ONE_FREE:
                             paidPrice += buyTwoGetOneForFree(s, product);
                             totalPrice += saleWithoutDiscount(s, product);
+                            product.setAmount(product.getAmount() - s.getRequestedAmount());
+                            break;
 
                         case FLAT_DISCOUNT:
                             paidPrice += flatDiscount(s, product, campaign.get());
                             totalPrice += saleWithoutDiscount(s, product);
+                            product.setAmount(product.getAmount() - s.getRequestedAmount());
+                            break;
                     }
                 }
                 else{
@@ -72,6 +76,7 @@ public class SellingService {
             else{
                 paidPrice += saleWithoutDiscount(s, product);
                 totalPrice += paidPrice;
+                product.setAmount(product.getAmount() - s.getRequestedAmount());
             }
         }
 
@@ -81,6 +86,7 @@ public class SellingService {
         sale.setTotalPrice(totalPrice);
         sale.setPaymentMethod(paymentMethod);
         saleRepository.save(sale);
+
         return "Sale is made.";
     }
 
@@ -89,26 +95,28 @@ public class SellingService {
 
         int discountedAmount = saleRequest.getRequestedAmount() / 3;
         price += product.getPrice() * (saleRequest.getRequestedAmount() - discountedAmount);
-        product.setAmount(product.getAmount() - saleRequest.getRequestedAmount());  //minus from stock
+         //minus from stock
 
         return price;
     }
 
     private double flatDiscount(SaleRequest saleRequest, Product product, Campaign campaign){
         double price = 0;
-
-        price += (product.getPrice() * saleRequest.getRequestedAmount()) * (100 - campaign.getDiscountRate()) / 100;
-        product.setAmount(product.getAmount() - saleRequest.getRequestedAmount());
+        price += (product.getPrice() * saleRequest.getRequestedAmount())
+                *
+                (100 - campaign.getDiscountRate()) / 100;
 
         return price;
     }
 
     private double saleWithoutDiscount(SaleRequest saleRequest, Product product){
         double price = 0;
-
         price += product.getPrice() * saleRequest.getRequestedAmount();
-        product.setAmount(product.getAmount() - saleRequest.getRequestedAmount());
 
         return price;
+    }
+
+    public List<Sale> getAllSales(){
+        return saleRepository.findAll();
     }
 }

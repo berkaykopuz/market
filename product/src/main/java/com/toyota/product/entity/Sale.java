@@ -18,6 +18,6 @@ public class Sale {
     private LocalDateTime saleDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-    @ManyToMany(mappedBy = "sales")
+    @ManyToMany(mappedBy = "sales", fetch = FetchType.EAGER)
     private Set<Product> products;
 }
