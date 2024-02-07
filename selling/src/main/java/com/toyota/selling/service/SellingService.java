@@ -89,6 +89,8 @@ public class SellingService {
 
         int discountedAmount = saleRequest.getRequestedAmount() / 3;
         price += product.getPrice() * (saleRequest.getRequestedAmount() - discountedAmount);
+        product.setAmount(product.getAmount() - saleRequest.getRequestedAmount());  //minus from stock
+
         return price;
     }
 
@@ -96,6 +98,8 @@ public class SellingService {
         double price = 0;
 
         price += (product.getPrice() * saleRequest.getRequestedAmount()) * (100 - campaign.getDiscountRate()) / 100;
+        product.setAmount(product.getAmount() - saleRequest.getRequestedAmount());
+
         return price;
     }
 
@@ -103,6 +107,8 @@ public class SellingService {
         double price = 0;
 
         price += product.getPrice() * saleRequest.getRequestedAmount();
+        product.setAmount(product.getAmount() - saleRequest.getRequestedAmount());
+
         return price;
     }
 }
