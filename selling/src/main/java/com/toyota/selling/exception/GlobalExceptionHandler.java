@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler{
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<Object> handle(ProductNotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
 
-    @ExceptionHandler(BadProductRequestException.class)
-    public ResponseEntity<Object> handle(BadProductRequestException e){
+    @ExceptionHandler(BadCampaignRequestException.class)
+    public ResponseEntity<Object> handle(BadCampaignRequestException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

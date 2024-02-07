@@ -26,6 +26,13 @@ spring:
           filters:
             - UserManagementFilter
 
+        - id: selling
+          uri: lb://selling
+          predicates:
+            - Path=/selling/**, /campaign/**
+          filters:
+            - SellingFilter
+
         - id: product
           uri: lb://product
           predicates:

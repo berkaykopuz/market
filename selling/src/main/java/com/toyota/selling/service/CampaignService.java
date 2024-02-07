@@ -21,7 +21,7 @@ public class CampaignService {
         return campaignRepository.findAll().stream().map(CampaignDto::convert).collect(Collectors.toList());
     }
 
-    public CampaignDto createProduct(CampaignDto campaignDto){
+    public CampaignDto createCampaign(CampaignDto campaignDto){
         if (    campaignDto.name() == null ||
                 campaignDto.campaignType() == null ||
                 campaignDto.discountRate() == null ||

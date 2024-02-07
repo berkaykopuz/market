@@ -13,7 +13,7 @@ public record CampaignDto (
         LocalDateTime startDate,
         LocalDateTime endDate,
         CampaignType campaignType,
-        Double discountRate
+        Integer discountRate
 ){
     public static CampaignDto convert(Campaign from){
         return new CampaignDto(from.getId(),

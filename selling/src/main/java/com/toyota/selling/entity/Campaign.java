@@ -16,7 +16,7 @@ public class Campaign {
     private LocalDateTime endDate;
     @Enumerated(EnumType.STRING)
     private CampaignType campaignType;
-    private Double discountRate;
+    private Integer discountRate;
 
     public Campaign() {
     }
@@ -61,11 +61,11 @@ public class Campaign {
         this.endDate = endDate;
     }
 
-    public Double getDiscountRate() {
+    public Integer getDiscountRate() {
         return discountRate;
     }
 
-    public void setDiscountRate(Double discountRate) {
+    public void setDiscountRate(Integer discountRate) {
         this.discountRate = discountRate;
     }
 }

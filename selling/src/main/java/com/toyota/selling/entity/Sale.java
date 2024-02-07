@@ -18,7 +18,7 @@ public class Sale {
     private LocalDateTime saleDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-    @ManyToMany(mappedBy = "products_sales")
+    @ManyToMany(mappedBy = "sales")
     private Set<Product> products;
     public Sale() {
     }
