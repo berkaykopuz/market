@@ -7,6 +7,9 @@ import com.toyota.selling.entity.PaymentMethod;
 import com.toyota.selling.entity.Product;
 import com.toyota.selling.entity.Sale;
 import com.toyota.selling.exception.BadCampaignRequestException;
+import com.toyota.selling.exception.BadSaleRequestException;
+import com.toyota.selling.exception.CampaignNotFoundException;
+import com.toyota.selling.exception.ProductNotFoundException;
 import com.toyota.selling.repository.CampaignRepository;
 import com.toyota.selling.repository.ProductRepository;
 import com.toyota.selling.repository.SaleRepository;
@@ -43,10 +46,10 @@ public class SellingService {
 
         for(SaleRequest s : saleRequests){
             Product product = productRepository.findById(s.getProductId())
-                    .orElseThrow(() -> new NotFoundException("")); //change
+                    .orElseThrow(() -> new ProductNotFoundException("Requested product has not found.")); //change
 
             if(s.getRequestedAmount() > product.getAmount()){
-                throw new BadRequestException(); //change
+                throw new BadSaleRequestException("Requested amount must not pass available value."); //change
             }
 
             products.add(product);
@@ -71,7 +74,7 @@ public class SellingService {
                     }
                 }
                 else{
-                    throw new NotFoundException(); //change
+                    throw new CampaignNotFoundException("Requested campaign not found."); //change
                 }
 
             }
