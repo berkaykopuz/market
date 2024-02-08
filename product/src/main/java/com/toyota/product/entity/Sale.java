@@ -18,6 +18,7 @@ public class Sale {
     private LocalDateTime saleDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-    @ManyToMany(mappedBy = "sales", fetch = FetchType.EAGER)
-    private Set<Product> products;
+    @OneToMany(mappedBy = "sale",
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<ProductSale> productSales;
 }

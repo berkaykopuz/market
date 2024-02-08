@@ -20,8 +20,8 @@ public class Product {
     private String category;
 
     private LocalDateTime updatedDate;
-    @ManyToMany(mappedBy = "products")
-    private Set<Sale> sales;
+    @OneToMany(mappedBy = "product")
+    private Set<ProductSale> productSales;
 
     public Product() {
     }

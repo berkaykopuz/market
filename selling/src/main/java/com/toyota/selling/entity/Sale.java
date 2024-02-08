@@ -19,13 +19,10 @@ public class Sale {
     private LocalDateTime saleDate;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+    @OneToMany(mappedBy = "sale",
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<ProductSale> productSales;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "sales_products",
-            joinColumns = @JoinColumn(name = "sale_id", referencedColumnName = "billId"),
-            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
-    private Set<Product> products = new HashSet<>();
     public Sale() {
     }
 
@@ -69,11 +66,11 @@ public class Sale {
         this.paymentMethod = paymentMethod;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public Set<ProductSale> getProductSales() {
+        return productSales;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setProductSales(Set<ProductSale> productSales) {
+        this.productSales = productSales;
     }
 }

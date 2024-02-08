@@ -2,10 +2,7 @@ package com.toyota.selling.service;
 
 import com.toyota.selling.dto.SaleDto;
 import com.toyota.selling.dto.SaleRequest;
-import com.toyota.selling.entity.Campaign;
-import com.toyota.selling.entity.PaymentMethod;
-import com.toyota.selling.entity.Product;
-import com.toyota.selling.entity.Sale;
+import com.toyota.selling.entity.*;
 import com.toyota.selling.exception.BadCampaignRequestException;
 import com.toyota.selling.exception.BadSaleRequestException;
 import com.toyota.selling.exception.CampaignNotFoundException;
@@ -42,7 +39,7 @@ public class SellingService {
         double totalPrice = 0;
         double paidPrice = 0;
         Sale sale = new Sale();
-        Set<Product> products = new HashSet<>();
+        Set<ProductSale> productSales = new HashSet<>();
 
         for(SaleRequest s : saleRequests){
             Product product = productRepository.findById(s.getProductId())
@@ -52,7 +49,12 @@ public class SellingService {
                 throw new BadSaleRequestException("Requested amount must not pass available value."); //change
             }
 
-            products.add(product);
+            ProductSale productSale = new ProductSale();
+            productSale.setProduct(product);
+            productSale.setAmount(s.getRequestedAmount());
+            productSale.setSale(sale);
+
+            productSales.add(productSale);
 
             Optional<Campaign> campaign = campaignRepository.findById(s.getCampaignId());
             if(campaign.isPresent()){
@@ -85,7 +87,7 @@ public class SellingService {
             }
         }
 
-        sale.setProducts(products);
+        sale.setProductSales(productSales);
         sale.setSaleDate(LocalDateTime.now());
         sale.setPaidPrice(paidPrice);
         sale.setTotalPrice(totalPrice);
@@ -119,9 +121,5 @@ public class SellingService {
         price += product.getPrice() * saleRequest.getRequestedAmount();
 
         return price;
-    }
-
-    public List<SaleDto> getAllSales(){
-        return saleRepository.findAll().stream().map(SaleDto::convert).collect(Collectors.toList());
     }
 }
