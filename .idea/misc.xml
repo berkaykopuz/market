@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/selling/pom.xml" />
         <option value="$PROJECT_DIR$/user-management/pom.xml" />
         <option value="$PROJECT_DIR$/authorization/pom.xml" />
+        <option value="$PROJECT_DIR$/report/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

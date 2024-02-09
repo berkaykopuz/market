@@ -46,7 +46,7 @@ public class SellingService {
                     .orElseThrow(() -> new ProductNotFoundException("Requested product has not found.")); //change
 
             if(s.getRequestedAmount() > product.getAmount()){
-                throw new BadSaleRequestException("Requested amount must not pass available value."); //change
+                throw new BadSaleRequestException("Requested amount must not be higher than available value."); //change
             }
 
             ProductSale productSale = new ProductSale();

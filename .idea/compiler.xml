@@ -9,6 +9,7 @@
         <module name="authorization" />
         <module name="product" />
         <module name="user-management" />
+        <module name="report" />
         <module name="selling" />
         <module name="eureka-server" />
         <module name="gateway" />
@@ -25,6 +26,7 @@
       <module name="eureka-server" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="product" options="-parameters" />
+      <module name="report" options="-parameters" />
       <module name="selling" options="-parameters" />
       <module name="user-management" options="-parameters" />
     </option>

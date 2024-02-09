@@ -33,6 +33,13 @@ spring:
           filters:
             - SellingFilter
 
+        - id: report
+          uri: lb://report
+          predicates:
+            - Path=/sales/**
+          filters:
+            - ReportFilter
+
         - id: product
           uri: lb://product
           predicates:

@@ -19,6 +19,6 @@ public class Sale {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     @OneToMany(mappedBy = "sale",
-            cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<ProductSale> productSales;
 }

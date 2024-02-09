@@ -16,14 +16,8 @@ import java.util.List;
 @RequestMapping("/selling")
 public class SellingController {
     private final SellingService sellingService;
-
     public SellingController(SellingService sellingService) {
         this.sellingService = sellingService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<SaleDto>> getAllSales(){
-        return new ResponseEntity<>(sellingService.getAllSales(), HttpStatus.OK);
     }
 
     @PostMapping("makesale")
