@@ -1,6 +1,8 @@
 package com.toyota.gateway.util;
 
 import io.jsonwebtoken.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,14 +12,18 @@ import static com.toyota.gateway.constant.Constant.SECRET;
 
 @Component
 public class JwtUtil {
+    private static Logger logger = LogManager.getLogger(JwtUtil.class);
 
     public boolean validateToken(final String token) {
         try {
             Jwts.parserBuilder().setSigningKey(SECRET).build().parseClaimsJws(token);
+            logger.info("Token has validated");
             return true;
         } catch (ExpiredJwtException e) {
+            logger.warn("Expired token");
             throw new RuntimeException("Expired token");
         } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+            logger.warn("Invalid token");
             throw new RuntimeException("Invalid token");
         }
     }
@@ -32,6 +38,7 @@ public class JwtUtil {
         if (claims.get("authorities") != null) {
             roles = (List<String>) claims.get("authorities");
         }
+
         return roles;
     }
 

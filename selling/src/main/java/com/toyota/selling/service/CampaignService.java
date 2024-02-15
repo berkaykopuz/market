@@ -4,6 +4,8 @@ import com.toyota.selling.dto.CampaignDto;
 import com.toyota.selling.entity.Campaign;
 import com.toyota.selling.exception.BadCampaignRequestException;
 import com.toyota.selling.repository.CampaignRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CampaignService {
+    private static Logger logger = LogManager.getLogger(CampaignService.class);
     private final CampaignRepository campaignRepository;
 
     public CampaignService(CampaignRepository campaignRepository) {
@@ -18,6 +21,7 @@ public class CampaignService {
     }
 
     public List<CampaignDto> getAllCampaigns(){
+        logger.info("Getting all campaigns");
         return campaignRepository.findAll().stream().map(CampaignDto::convert).collect(Collectors.toList());
     }
 
@@ -28,6 +32,7 @@ public class CampaignService {
                 campaignDto.startDate() == null ||
                 campaignDto.endDate() == null
         ) {
+            logger.warn("Invalid campaign data. All fields are required.");
             throw new BadCampaignRequestException("Invalid campaign data. All fields are required.");
         }
 
@@ -35,6 +40,7 @@ public class CampaignService {
                 campaignDto.campaignType().name().isEmpty() ||
                 campaignDto.discountRate() < 0 // maybe should add date check(mustn't before now)
         ) {
+            logger.warn("Invalid campaign data. All fields must be valid.");
             throw new BadCampaignRequestException("Invalid campaign data. All fields must be valid.");
         }
 
@@ -52,9 +58,11 @@ public class CampaignService {
     public String deleteCampaign(Long campaignId) {
         if(campaignRepository.existsById(campaignId)){
             campaignRepository.deleteById(campaignId);
+            logger.info("Campaign deleted");
             return "Campaign deleted";
         }
         else{
+            logger.warn("Campaign not found with id: " + campaignId);
             return "Campaign not found with id: " + campaignId;
         }
     }

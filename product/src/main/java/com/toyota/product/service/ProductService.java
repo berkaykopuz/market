@@ -6,6 +6,8 @@ import com.toyota.product.exception.BadProductRequestException;
 import com.toyota.product.exception.ProductNotFoundException;
 import com.toyota.product.repository.ProductRepository;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+    private static Logger logger = LogManager.getLogger(ProductService.class);
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -22,6 +25,7 @@ public class ProductService {
     }
 
     public List<ProductDto> getAllProducts(){
+        logger.info("Getting all products");
         return productRepository.findAll().stream().map(ProductDto::convert).collect(Collectors.toList());
     }
 
@@ -29,6 +33,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new ProductNotFoundException("product not found with id: " + productId));
 
+        logger.info("Getting product with id: " + product.getId());
         return ProductDto.convert(product);
     }
 
@@ -37,6 +42,7 @@ public class ProductService {
                 productDto.amount() == null ||
                 productDto.price() == null ||
                 productDto.category() == null) {
+            logger.warn("Invalid product data. All fields are required.");
             throw new BadProductRequestException("Invalid product data. All fields are required.");
         }
 
@@ -44,6 +50,7 @@ public class ProductService {
                 productDto.amount() <= 0 ||
                 productDto.price() <= 0 ||
                 productDto.category().isEmpty()) {
+            logger.warn("Invalid product data. All fields must be valid.");
             throw new BadProductRequestException("Invalid product data. All fields must be valid.");
         }
 
@@ -55,6 +62,7 @@ public class ProductService {
         product.setCategory(productDto.category());
         product.setUpdatedDate(LocalDateTime.now());
 
+        logger.info("Creating new product object");
         return ProductDto.convert(productRepository.save(product));
     }
 
@@ -63,6 +71,7 @@ public class ProductService {
                 updatedProductDto.amount() == null ||
                 updatedProductDto.price() == null ||
                 updatedProductDto.category() == null) {
+            logger.warn("Invalid product data. All fields are required.");
             throw new BadProductRequestException("Invalid product data. All fields are required.");
         }
 
@@ -70,6 +79,7 @@ public class ProductService {
                 updatedProductDto.amount() <= 0 ||
                 updatedProductDto.price() <= 0 ||
                 updatedProductDto.category().isEmpty()) {
+            logger.warn("Invalid product data. All fields must be valid.");
             throw new BadProductRequestException("Invalid product data. All fields must be valid.");
         }
 
@@ -86,10 +96,12 @@ public class ProductService {
 
             Product updatedProduct = productRepository.save(existingProduct);
 
+            logger.info("Updating current product object");
             return ProductDto.convert(updatedProduct);
         }
 
         else{
+            logger.warn("Product not found with id: " + productId);
             throw new ProductNotFoundException("Product not found with id: " + productId);
         }
     }
@@ -97,9 +109,11 @@ public class ProductService {
     public String deleteProduct(Long productId) {
         if(productRepository.existsById(productId)){
             productRepository.deleteById(productId);
+            logger.info("Deleting product with id: " + productId);
             return "Product deleted";
         }
         else{
+            logger.warn("Product not found with id: " + productId);
             return "Product not found with id: " + productId;
         }
     }

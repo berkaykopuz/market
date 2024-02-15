@@ -12,6 +12,9 @@ import com.toyota.selling.repository.ProductRepository;
 import com.toyota.selling.repository.SaleRepository;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,6 +27,7 @@ import static com.toyota.selling.entity.CampaignType.FLAT_DISCOUNT;
 
 @Service
 public class SellingService {
+    private static Logger logger = LogManager.getLogger(SellingService.class);
     private final SaleRepository saleRepository;
     private final CampaignRepository campaignRepository;
     private final ProductRepository productRepository;
@@ -43,10 +47,11 @@ public class SellingService {
 
         for(SaleRequest s : saleRequests){
             Product product = productRepository.findById(s.getProductId())
-                    .orElseThrow(() -> new ProductNotFoundException("Requested product has not found.")); //change
+                    .orElseThrow(() -> new ProductNotFoundException("Requested product has not found."));
 
             if(s.getRequestedAmount() > product.getAmount()){
-                throw new BadSaleRequestException("Requested amount must not be higher than available value."); //change
+                logger.warn("Requested amount must not be higher than available value.");
+                throw new BadSaleRequestException("Requested amount must not be higher than available stock.");
             }
 
             ProductSale productSale = new ProductSale();
@@ -76,6 +81,7 @@ public class SellingService {
                     }
                 }
                 else{
+                    logger.warn("Requested campaign not found.");
                     throw new CampaignNotFoundException("Requested campaign not found."); //change
                 }
 
@@ -93,6 +99,8 @@ public class SellingService {
         sale.setTotalPrice(totalPrice);
         sale.setPaymentMethod(paymentMethod);
         saleRepository.save(sale);
+
+        logger.info("Requested sale has completed");
 
         return "Sale is made.";
     }
