@@ -16,7 +16,7 @@ public class Product {
 
     private Integer amount;
 
-    private Long price;
+    private Double price;
     private String category;
 
     private LocalDateTime updatedDate;
@@ -50,11 +50,11 @@ public class Product {
         this.amount = amount;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

@@ -8,9 +8,9 @@ import java.util.Date;
 public record ProductDto(Long id,
         String name,
         Integer amount,
-        Long price,
+        Double price,
         String category,
-                         LocalDateTime updatedDate)
+        LocalDateTime updatedDate)
 {
 
     public static ProductDto convert(Product from){
