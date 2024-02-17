@@ -56,7 +56,7 @@ public class SellingService {
 
             ProductSale productSale = new ProductSale();
             productSale.setProduct(product);
-            productSale.setAmount(s.getRequestedAmount());
+            productSale.setSaledAmount(s.getRequestedAmount());
             productSale.setSale(sale);
 
             productSales.add(productSale);

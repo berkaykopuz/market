@@ -1,5 +1,7 @@
 package com.toyota.gateway.util;
 
+import com.toyota.gateway.exception.UnauthenticatedException;
+import com.toyota.gateway.exception.UnauthorizedException;
 import io.jsonwebtoken.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,10 +23,10 @@ public class JwtUtil {
             return true;
         } catch (ExpiredJwtException e) {
             logger.warn("Expired token");
-            throw new RuntimeException("Expired token");
+            throw new UnauthenticatedException("Expired token");
         } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             logger.warn("Invalid token");
-            throw new RuntimeException("Invalid token");
+            throw new UnauthenticatedException("Invalid token");
         }
     }
 

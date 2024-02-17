@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,19 @@ public class CampaignService {
         ) {
             logger.warn("Invalid campaign data. All fields must be valid.");
             throw new BadCampaignRequestException("Invalid campaign data. All fields must be valid.");
+        }
+
+        if(campaignDto.discountRate() > 100){
+            logger.warn("Discount rate could not higher than 100 percent");
+            throw new BadCampaignRequestException("Discount rate must not higher than 100 percent");
+        }
+
+        if(campaignDto.startDate().isBefore(LocalDateTime.now()) ||
+            campaignDto.endDate().isBefore(campaignDto.startDate()) ||
+            campaignDto.endDate().isBefore(LocalDateTime.now())){
+
+            logger.warn("Campaign dates must not before now");
+            throw new BadCampaignRequestException("Campaign dates must not before now");
         }
 
 

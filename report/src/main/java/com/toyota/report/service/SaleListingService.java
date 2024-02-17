@@ -100,17 +100,17 @@ public class SaleListingService {
         sale.getProductSales().forEach(s -> {
             pdfParagraph.add(s.getProduct().getId().toString());
             pdfParagraph.add("    ");
-            pdfParagraph.add("(" + s.getAmount() + " PIECE X " + s.getProduct().getPrice() + ")");
+            pdfParagraph.add("(" + s.getSaledAmount() + " PIECE X " + s.getProduct().getPrice() + ")");
             pdfParagraph.add("\n");
             pdfParagraph.add(s.getProduct().getName());
 
 
-            int spaceCount = 70 - (s.getProduct().getName().length() + (s.getAmount() + " PIECE X " + s.getProduct().getPrice()).length());
+            int spaceCount = 70 - (s.getProduct().getName().length() + (s.getSaledAmount() + " PIECE X " + s.getProduct().getPrice()).length());
             for (int i = 0; i < spaceCount; i++) {
                 pdfParagraph.add(" ");
             }
 
-            pdfParagraph.add((s.getProduct().getPrice() * s.getAmount()) + "\n");
+            pdfParagraph.add((s.getProduct().getPrice() * s.getSaledAmount()) + "\n");
         });
 
         pdfParagraph.add("----------------------------------------------------------------------------" +

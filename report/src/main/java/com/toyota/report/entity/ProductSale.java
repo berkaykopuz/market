@@ -19,7 +19,7 @@ public class ProductSale {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    private int amount;
+    private int saledAmount;
 
     public ProductSale() {
     }
@@ -48,11 +48,11 @@ public class ProductSale {
         this.product = product;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getSaledAmount() {
+        return saledAmount;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setSaledAmount(int saledAmount) {
+        this.saledAmount = saledAmount;
     }
 }
