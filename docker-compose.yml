@@ -1,0 +1,101 @@
+version: "3.7"
+services:
+
+  ## PostgreSQL Docker Compose
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_DB: marketdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    command: -p 5432
+    restart: always
+
+  ## Eureka Server
+  eureka-server:
+    image: eureka-server:latest
+    container_name: eureka-server
+    build: ./eureka-server
+
+  gateway:
+    image: gateway:latest
+    container_name: gateway
+    ports:
+      - "8088:8088"
+    expose:
+      - "8088"
+    depends_on:
+      - eureka-server
+      - authorization
+      - user-management
+      - product
+      - selling
+      - report
+    build: ./gateway
+
+  user-management:
+    container_name: user-management
+    image: user-management:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
+    depends_on:
+      - postgres
+      - eureka-server
+    build: ./user-management
+
+  product:
+    container_name: product
+    image: product:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
+    depends_on:
+      - postgres
+      - eureka-server
+    build:
+      context: ./product
+
+  selling:
+    container_name: selling
+    image: selling:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
+    depends_on:
+      - postgres
+      - eureka-server
+    build:
+      context: ./selling
+
+  report:
+    container_name: report
+    image: report:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
+    depends_on:
+      - postgres
+      - eureka-server
+    build:
+      context: ./report
+
+  authorization:
+    container_name: authorization
+    image: authorization:latest
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
+    depends_on:
+      - postgres
+      - eureka-server
+    build: ./authorization
+
+
+
+networks:
+  market:
+    driver: bridge
