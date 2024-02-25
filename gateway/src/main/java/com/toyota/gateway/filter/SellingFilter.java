@@ -2,6 +2,8 @@ package com.toyota.gateway.filter;
 
 import com.toyota.gateway.exception.UnauthorizedException;
 import com.toyota.gateway.util.JwtUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SellingFilter extends AbstractGatewayFilterFactory<SellingFilter.Config> {
+    public static Logger logger = LogManager.getLogger(SellingFilter.class);
     private final RouteValidator validator;
     private final JwtUtil jwtUtil;
 
@@ -23,6 +26,7 @@ public class SellingFilter extends AbstractGatewayFilterFactory<SellingFilter.Co
         return ((exchange, chain) -> {
             if (validator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    logger.warn("Missing authorization header. Access denied");
                     throw new UnauthorizedException("Missing authorization header. Access denied");
                 }
 
@@ -37,10 +41,13 @@ public class SellingFilter extends AbstractGatewayFilterFactory<SellingFilter.Co
 
                     // check if user has CASHIER role
                     if (!jwtUtil.getRolesFromToken(authHeader).contains("CASHIER")) {
+                        logger.warn("User does not have CASHIER role. Access denied");
                         throw new UnauthorizedException("User does not have CASHIER role. Access denied");
                     }
 
+                    logger.info("Validating token");
                 } catch (Exception e) {
+                    logger.warn("invalid access...!");
                     System.out.println("invalid access...!");
                     throw e;
                 }

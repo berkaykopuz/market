@@ -4,6 +4,8 @@ package com.toyota.gateway.filter;
 import com.toyota.gateway.exception.UnauthorizedException;
 import com.toyota.gateway.util.JwtUtil;
 import jakarta.ws.rs.NotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserManagementFilter extends AbstractGatewayFilterFactory<UserManagementFilter.Config> {
+    public static Logger logger = LogManager.getLogger(UserManagementFilter.class);
     private final RouteValidator validator;
     private final JwtUtil jwtUtil;
 
@@ -25,6 +28,7 @@ public class UserManagementFilter extends AbstractGatewayFilterFactory<UserManag
         return ((exchange, chain) -> {
             if (validator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    logger.warn("Missing authorization header. Access denied");
                     throw new UnauthorizedException("Missing authorization header. Access denied");
                 }
 
@@ -39,10 +43,13 @@ public class UserManagementFilter extends AbstractGatewayFilterFactory<UserManag
 
                     // check if user has ADMIN role
                     if (!jwtUtil.getRolesFromToken(authHeader).contains("ADMIN")) {
+                        logger.warn("User does not have ADMIN role. Access denied");
                         throw new UnauthorizedException("User does not have ADMIN role. Access denied");
                     }
 
+                    logger.info("Validating token");
                 } catch (Exception e) {
+                    logger.warn("invalid access...!");
                     System.out.println("invalid access...!");
                     throw e;
                 }

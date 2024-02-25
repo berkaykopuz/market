@@ -2,9 +2,11 @@ package com.toyota.report.service;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
+import com.toyota.report.constant.Constant;
 import com.toyota.report.entity.Product;
 import com.toyota.report.entity.ProductSale;
 import com.toyota.report.entity.Sale;
+import com.toyota.report.exception.SaleNotFoundException;
 import com.toyota.report.repository.ProductSaleRepository;
 import com.toyota.report.repository.SaleRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,7 +60,7 @@ public class SaleListingService {
 
     public Sale getSale(String billId){
         Sale sale = saleRepository.findById(billId)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + billId));
         logger.info("Getting specific sale with id:" + billId);
         return sale;
     }
@@ -73,8 +75,8 @@ public class SaleListingService {
         Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD);
         fontHeader.setSize(22);
 
-        Paragraph headerParagraph = new Paragraph(" MARKET\n\n" +
-                "toki konutlari sk. akpinar mah.\n05332147878\nKocaeli "
+        Paragraph headerParagraph = new Paragraph(Constant.COMPANY_NAME +
+                Constant.ADDRESS
                 , fontHeader);
         headerParagraph.setAlignment(Paragraph.ALIGN_CENTER);
 

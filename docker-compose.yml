@@ -25,9 +25,12 @@ services:
     container_name: eureka-server
     build: ./eureka-server
 
+  # Gateway
   gateway:
     image: gateway:latest
     container_name: gateway
+    volumes:
+      - ./gateway/logs:/app/logs
     ports:
       - "8088:8088"
     expose:

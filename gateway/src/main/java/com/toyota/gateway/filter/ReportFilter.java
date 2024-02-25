@@ -2,6 +2,8 @@ package com.toyota.gateway.filter;
 
 import com.toyota.gateway.exception.UnauthorizedException;
 import com.toyota.gateway.util.JwtUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Config> {
+    public static Logger logger = LogManager.getLogger(ReportFilter.class);
     private final RouteValidator validator;
     private final JwtUtil jwtUtil;
 
@@ -22,6 +25,7 @@ public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Conf
         return ((exchange, chain) -> {
             if (validator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    logger.warn("Missing authorization header. Access denied");
                     throw new UnauthorizedException("Missing authorization header. Access denied");
                 }
 
@@ -36,10 +40,13 @@ public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Conf
 
                     // check if user has MANAGER role
                     if (!jwtUtil.getRolesFromToken(authHeader).contains("MANAGER")) {
+                        logger.warn("User does not have MANAGER role. Access denied");
                         throw new UnauthorizedException("User does not have MANAGER role. Access denied");
                     }
 
+                    logger.info("Validating token");
                 } catch (Exception e) {
+                    logger.warn("Invalid access..!");
                     System.out.println("invalid access...!");
                     throw e;
                 }
