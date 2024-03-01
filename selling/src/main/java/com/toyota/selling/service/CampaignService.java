@@ -50,8 +50,7 @@ public class CampaignService {
             throw new BadCampaignRequestException("Discount rate must not higher than 100 percent");
         }
 
-        if(campaignDto.startDate().isBefore(LocalDateTime.now()) ||
-            campaignDto.endDate().isBefore(campaignDto.startDate()) ||
+        if(campaignDto.endDate().isBefore(campaignDto.startDate()) ||
             campaignDto.endDate().isBefore(LocalDateTime.now())){
 
             logger.warn("Campaign dates must not before now");

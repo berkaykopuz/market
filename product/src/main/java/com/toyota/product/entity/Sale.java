@@ -16,6 +16,7 @@ public class Sale {
     private Double totalPrice;
     private Double paidPrice;
     private LocalDateTime saleDate;
+    private String cashierName;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     @OneToMany(mappedBy = "sale",

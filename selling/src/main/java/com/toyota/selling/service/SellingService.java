@@ -39,7 +39,7 @@ public class SellingService {
         this.productRepository = productRepository;
     }
 
-    public String makeSale(List<SaleRequest> saleRequests, PaymentMethod paymentMethod){
+    public String makeSale(List<SaleRequest> saleRequests, PaymentMethod paymentMethod, String username){
         double totalPrice = 0;
         double paidPrice = 0;
         Sale sale = new Sale();
@@ -81,7 +81,7 @@ public class SellingService {
                     }
                 }
                 else{
-                    logger.warn("Requested campaign not found.");
+                    logger.warn("Requested campaign is not available now.");
                     throw new CampaignNotFoundException("Requested campaign not found."); //change
                 }
 
@@ -98,6 +98,7 @@ public class SellingService {
         sale.setPaidPrice(paidPrice);
         sale.setTotalPrice(totalPrice);
         sale.setPaymentMethod(paymentMethod);
+        sale.setCashierName(username);
         saleRepository.save(sale);
 
         logger.info("Requested sale has completed");

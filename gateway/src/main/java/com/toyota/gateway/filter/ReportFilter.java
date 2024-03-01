@@ -7,7 +7,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
+
+import java.util.function.Consumer;
 
 @Component
 public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Config> {
@@ -35,7 +40,6 @@ public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Conf
                 }
 
                 try {
-
                     jwtUtil.validateToken(authHeader);
 
                     // check if user has MANAGER role
@@ -44,7 +48,8 @@ public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Conf
                         throw new UnauthorizedException("User does not have MANAGER role. Access denied");
                     }
 
-                    logger.info("Validating token");
+                    logger.info("Token has verified.");
+
                 } catch (Exception e) {
                     logger.warn("Invalid access..!");
                     System.out.println("invalid access...!");

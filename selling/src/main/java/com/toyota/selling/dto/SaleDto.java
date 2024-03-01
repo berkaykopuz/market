@@ -10,6 +10,7 @@ public record SaleDto(
         Double totalPrice,
         Double paidPrice,
         LocalDateTime saleDate,
+        String cashierName,
         PaymentMethod paymentMethod,
         Set<ProductSale> productSales
 ){
@@ -19,6 +20,7 @@ public record SaleDto(
                 from.getTotalPrice(),
                 from.getPaidPrice(),
                 from.getSaleDate(),
+                from.getCashierName(),
                 from.getPaymentMethod(),
                 from.getProductSales()
         );

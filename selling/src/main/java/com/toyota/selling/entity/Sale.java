@@ -17,6 +17,7 @@ public class Sale {
     private Double totalPrice;
     private Double paidPrice;
     private LocalDateTime saleDate;
+    private String cashierName;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     @OneToMany(mappedBy = "sale",
@@ -24,6 +25,14 @@ public class Sale {
     private Set<ProductSale> productSales;
 
     public Sale() {
+    }
+
+    public String getCashierName() {
+        return cashierName;
+    }
+
+    public void setCashierName(String cashierName) {
+        this.cashierName = cashierName;
     }
 
     public String getBillId() {

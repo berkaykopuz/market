@@ -32,4 +32,9 @@ public class AuthService {
         jwtService.validateToken(token);
     }
 
+    public String getUsernameFromToken(String token){
+        logger.info("Getting username from JWT");
+        return jwtService.getUsernameFromToken(token);
+    }
+
 }

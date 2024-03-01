@@ -2,20 +2,17 @@ package com.toyota.report.controller;
 
 import com.toyota.report.entity.Sale;
 import com.toyota.report.service.SaleListingService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +45,7 @@ public class SaleController {
 
     @GetMapping("createbill")
     public void createBillForSale(HttpServletResponse response, @RequestParam String billId) throws IOException {
+
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -57,6 +55,12 @@ public class SaleController {
         response.setHeader(headerKey, headerValue);
 
         saleListingService.createBillForSale(response, billId);
+    }
+
+    @GetMapping("report")
+    public String getReport(@RequestHeader("X-Username") String username) {
+        // X-Username başlığını kullanarak gelen kullanıcı adını al
+        return "Received username: " + username;
     }
 
 }

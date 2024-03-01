@@ -49,6 +49,8 @@ services:
     image: user-management:latest
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
+    ports:
+      - "8070:8070"
     depends_on:
       - postgres
       - eureka-server
