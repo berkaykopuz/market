@@ -57,10 +57,4 @@ public class SaleController {
         saleListingService.createBillForSale(response, billId);
     }
 
-    @GetMapping("report")
-    public String getReport(@RequestHeader("X-Username") String username) {
-        // X-Username başlığını kullanarak gelen kullanıcı adını al
-        return "Received username: " + username;
-    }
-
 }

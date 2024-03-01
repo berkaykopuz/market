@@ -87,8 +87,10 @@ public class SaleListingService {
         pdfParagraph.setAlignment(Paragraph.ALIGN_LEFT);
 
         pdfParagraph.add("\nCashier: " + sale.getCashierName());
-        pdfParagraph.add("Date: " + sale.getSaleDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        pdfParagraph.add("               Hour: " + sale.getSaleDate().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        pdfParagraph.add("               " +
+                "               Date: " + sale.getSaleDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        pdfParagraph.add("               " +
+                "               Hour: " + sale.getSaleDate().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         pdfParagraph.add("\n");
 
 
