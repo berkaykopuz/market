@@ -64,12 +64,13 @@ public class UserService{
 
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
-        List<UserDto> userDtos = new ArrayList<>();
-
-        logger.info("Getting all users");
-        return users.stream()
+        List<UserDto> userDtos = users.stream()
                 .map(UserDto::convert)
                 .collect(Collectors.toList());
+
+        logger.info("Getting all users");
+
+        return userDtos;
     }
 
     public UserDto getUserById(String userId) {

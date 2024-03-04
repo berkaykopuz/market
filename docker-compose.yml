@@ -30,7 +30,7 @@ services:
     image: gateway:latest
     container_name: gateway
     volumes:
-      - ./gateway/logs:/app/logs
+      - /app/logs
     ports:
       - "8088:8088"
     expose:
@@ -47,6 +47,8 @@ services:
   user-management:
     container_name: user-management
     image: user-management:latest
+    volumes:
+      - /app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -57,6 +59,8 @@ services:
   product:
     container_name: product
     image: product:latest
+    volumes:
+      - /app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -68,6 +72,8 @@ services:
   selling:
     container_name: selling
     image: selling:latest
+    volumes:
+      - /app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -79,6 +85,8 @@ services:
   report:
     container_name: report
     image: report:latest
+    volumes:
+      - /app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -90,6 +98,8 @@ services:
   authorization:
     container_name: authorization
     image: authorization:latest
+    volumes:
+      - /app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:

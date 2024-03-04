@@ -42,6 +42,8 @@ public class SellingService {
     public String makeSale(List<SaleRequest> saleRequests, PaymentMethod paymentMethod, String username){
         double totalPrice = 0;
         double paidPrice = 0;
+        long campaignId;
+
         Sale sale = new Sale();
         Set<ProductSale> productSales = new HashSet<>();
 
@@ -61,7 +63,13 @@ public class SellingService {
 
             productSales.add(productSale);
 
-            Optional<Campaign> campaign = campaignRepository.findById(s.getCampaignId());
+            if(s.getCampaignId() == null){ //null check
+                campaignId = -1;
+            }else{
+                campaignId = s.getCampaignId();
+            }
+
+            Optional<Campaign> campaign = campaignRepository.findById(campaignId);
             if(campaign.isPresent()){
                 if(LocalDateTime.now().isAfter(campaign.get().getStartDate()) &&
                         LocalDateTime.now().isBefore(campaign.get().getEndDate())
@@ -82,13 +90,13 @@ public class SellingService {
                 }
                 else{
                     logger.warn("Requested campaign is not available now.");
-                    throw new CampaignNotFoundException("Requested campaign not found."); //change
+                    throw new CampaignNotFoundException("Requested campaign is not available now."); //change
                 }
 
             }
             else{
                 paidPrice += saleWithoutDiscount(s, product);
-                totalPrice += paidPrice;
+                totalPrice = paidPrice;
                 product.setAmount(product.getAmount() - s.getRequestedAmount());
             }
         }
