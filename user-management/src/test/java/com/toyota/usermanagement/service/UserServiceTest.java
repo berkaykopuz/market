@@ -55,6 +55,10 @@ class UserServiceTest {
         String result = userService.saveUser(user, "testRole");
 
         assertEquals("User added successfully", result);
+
+        verify(userRepository).existsByUsername(user.getUsername());
+        verify(passwordEncoder).encode(user.getPassword());
+        verify(roleRepository).findByRolename("testRole");
     }
 
     @Test
@@ -70,6 +74,9 @@ class UserServiceTest {
         assertThrows(NotFoundException.class,
                 () -> userService.saveUser(user, "testRole"));
 
+        verify(userRepository).existsByUsername(user.getUsername());
+        verify(roleRepository).findByRolename("testRole");
+
     }
 
     @Test
@@ -84,6 +91,7 @@ class UserServiceTest {
 
         assertEquals("Username is already taken! Please choose another one." , result);
 
+        verify(userRepository).existsByUsername(user.getUsername());
     }
 
     @Test
@@ -148,6 +156,27 @@ class UserServiceTest {
 
         assertEquals("newTestUser", result.username());
         assertEquals("encodedPassword", result.password());
+    }
+
+    @Test
+    void testUpdateUser_whenUserIsNotExist_shouldReturnUserWithUserDto(){
+        User user = new User();
+        user.setUsername("testUser");
+        user.setPassword("testPassword");
+        user.setRoles(List.of());
+
+        UserDto userDto = new UserDto("0",
+                "newTestUser",
+                "newTestPassword",
+                List.of());
+
+        when(userRepository.findById(any())).thenThrow(new NotFoundException("User not found."));
+
+        assertThrows(NotFoundException.class,
+                () -> userService.updateUser(userDto, any()));
+
+        verify(userRepository).findById(any());
+
     }
 
     @Test
