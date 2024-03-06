@@ -40,7 +40,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testSaveUser_whenUsernameIsNotTakenBefore_shouldSaveUser() {
+    void testSaveUser_whenUsernameIsNotTakenBefore_shouldSaveUser() {  //!!! bakilacak
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
@@ -53,6 +53,7 @@ class UserServiceTest {
         when(roleRepository.findByRolename("testRole")).thenReturn(Optional.of(role));
 
         String result = userService.saveUser(user, "testRole");
+
 
         assertEquals("User added successfully", result);
 
@@ -88,8 +89,9 @@ class UserServiceTest {
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(true);
 
         String result = userService.saveUser(user, "testRole");
+        String expected = "Username is already taken! Please choose another one.";
 
-        assertEquals("Username is already taken! Please choose another one." , result);
+        assertEquals(expected, result);
 
         verify(userRepository).existsByUsername(user.getUsername());
     }
@@ -131,8 +133,9 @@ class UserServiceTest {
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
         UserDto result = userService.getUserById("testId");
+        String expectedUsername = "testUser";
 
-        assertEquals("testUser", result.username());
+        assertEquals(expectedUsername, result.username());
     }
 
     @Test
@@ -153,9 +156,11 @@ class UserServiceTest {
         when(userRepository.save(any())).thenReturn(user);
 
         UserDto result = userService.updateUser(userDto, "testId");
+        String expectedUsername = "newTestUser";
+        String expectedPassword = "encodedPassword";
 
-        assertEquals("newTestUser", result.username());
-        assertEquals("encodedPassword", result.password());
+        assertEquals(expectedUsername, result.username());
+        assertEquals(expectedPassword, result.password());
     }
 
     @Test
@@ -187,8 +192,9 @@ class UserServiceTest {
         doNothing().when(userRepository).deleteById(userId);
 
         String result = userService.deleteUser(userId);
+        String expected = "User has deleted with id: " + userId;
 
-        assertEquals("User has deleted with id: " + userId, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -198,8 +204,9 @@ class UserServiceTest {
         when(userRepository.existsById(userId)).thenReturn(false);
 
         String result = userService.deleteUser(userId);
+        String expected = "User not found with id: " + userId;
 
-        assertEquals("User not found with id: " + userId, result);
+        assertEquals(expected, result);
     }
 
 
