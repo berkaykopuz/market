@@ -164,7 +164,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUser_whenUserIsNotExist_shouldReturnUserWithUserDto(){
+    void testUpdateUser_whenUserIsNotExist_shouldThrowException(){
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
