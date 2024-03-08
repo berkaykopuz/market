@@ -9,6 +9,11 @@ public class SaleRequest {
     private Integer requestedAmount;
     private Long campaignId;
 
+    public SaleRequest(Long productId, Integer requestedAmount, Long campaignId) {
+        this.productId = productId;
+        this.requestedAmount = requestedAmount;
+        this.campaignId = campaignId;
+    }
 
     public Long getProductId() {
         return productId;

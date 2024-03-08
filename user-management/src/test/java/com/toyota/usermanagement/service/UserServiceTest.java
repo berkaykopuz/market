@@ -185,7 +185,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUser_whenUserIdExist_shouldDeleteUser() {
+    void testDeleteUser_whenUserExist_shouldDeleteUser() {
         String userId = "0";
 
         when(userRepository.existsById(userId)).thenReturn(true);

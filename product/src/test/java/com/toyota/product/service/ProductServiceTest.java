@@ -5,8 +5,10 @@ import com.toyota.product.entity.Product;
 import com.toyota.product.exception.BadProductRequestException;
 import com.toyota.product.exception.ProductNotFoundException;
 import com.toyota.product.repository.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
@@ -15,15 +17,18 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 
 class ProductServiceTest {
     private ProductService productService;
     private ProductRepository productRepository;
+    private MockedStatic<ProductDto> mockStatic;
     @BeforeEach
     void setUp() {
         productRepository = Mockito.mock(ProductRepository.class);
-        Mockito.mockStatic(ProductDto.class);
+        mockStatic = Mockito.mockStatic(ProductDto.class);
 
         productService = new ProductService(productRepository);
     }
@@ -35,15 +40,16 @@ class ProductServiceTest {
     @Test
     void getProductById() {
         Product product = generateProduct();
+        Long productId = 1L;
 
-        Mockito.when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        Mockito.when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
-        ProductDto result = productService.getProductById(1L);
+        ProductDto result = productService.getProductById(productId);
         ProductDto expectedProductDto = ProductDto.convert(product);
 
         assertEquals(expectedProductDto, result);
 
-        Mockito.verify(productRepository).findById(1L);
+        Mockito.verify(productRepository).findById(productId);
     }
 
     @Test
@@ -51,8 +57,8 @@ class ProductServiceTest {
         Product product = generateProduct();
         ProductDto expectedProductDto = generateProductDto(product);
 
-        Mockito.when(productRepository.save(product)).thenReturn(product);
-        Mockito.when(ProductDto.convert(product)).thenReturn(expectedProductDto);
+        Mockito.doNothing().when(productRepository.save(product));
+        Mockito.when(ProductDto.convert(productRepository.save(product))).thenReturn(expectedProductDto);
 
         ProductDto result = productService.createProduct(expectedProductDto);
 
@@ -74,7 +80,10 @@ class ProductServiceTest {
 
     @Test
     void testCreateProduct_whenProductRequestIsNotValid_shouldThrowBadProductRequestException(){
-        ProductDto productDto = new ProductDto(1L,
+
+        Long productId = 1L;
+
+        ProductDto productDto = new ProductDto(productId,
                 "product",
                 -1,
                 -5.0,
@@ -122,24 +131,74 @@ class ProductServiceTest {
 
     @Test
     void testUpdateProduct_whenProductIsNotExist_shouldUpdateProductandReturnProductDto(){
+        Long productId = 1L;
 
-        ProductDto productDto = new ProductDto(1L,
+        ProductDto productDto = new ProductDto(productId,
                 "product",
                 10,
                 10.0,
                 "GIDA",
                 LocalDateTime.now());
 
-        Mockito.when(productRepository.findById(1L)).thenReturn(null);
+        Mockito.when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotFoundException.class,
-                () -> productService.updateProduct(2L, productDto));
+                () -> productService.updateProduct(productId, productDto));
 
+        Mockito.verify(productRepository).findById(productId);
+        Mockito.verifyNoMoreInteractions(productRepository);
+    }
+
+    @Test
+    void testUpdateProduct_whenProductRequestIsNotValid_shouldUpdateProductandReturnProductDto(){
+        Long productId = 1L;
+
+        ProductDto productDto = new ProductDto(productId,
+                "product",
+                -1,
+                -5.0,
+                "",
+                LocalDateTime.now());
+
+        assertThrows(BadProductRequestException.class, () -> productService.createProduct(productDto));
+
+        Mockito.verifyNoInteractions(productRepository);
+    }
+
+    @Test
+    void testUpdateProduct_whenProductRequestHasNullProperties_shouldThrowBadProductRequestException(){
+        ProductDto productDto = new ProductDto(null, null, null, null, null, null);
+
+        assertThrows(BadProductRequestException.class, () -> productService.createProduct(productDto));
+
+        Mockito.verifyNoInteractions(productRepository);
     }
 
 
     @Test
-    void deleteProduct() {
+    void testDeleteUser_whenProductExist_shouldDeleteProduct() {
+        Long productId = 1L;
+
+        when(productRepository.existsById(productId)).thenReturn(true);
+        doNothing().when(productRepository).deleteById(productId);
+
+        String result = productService.deleteProduct(productId);
+        String expected = "Product deleted";
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void testDeleteProduct_whenProductIsNotExist_shouldReturnMessage() {
+        Long productId = 1L;
+
+        when(productRepository.existsById(productId)).thenReturn(false);
+
+
+        String result = productService.deleteProduct(productId);
+        String expected = "Product not found with id: " + productId;
+
+        assertEquals(expected, result);
     }
 
     private Product generateProduct(){
@@ -166,5 +225,10 @@ class ProductServiceTest {
                 product.getUpdatedDate()
         );
         return productDto;
+    }
+
+    @AfterEach
+    public void afterEach() {
+        mockStatic.close();
     }
 }
