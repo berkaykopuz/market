@@ -53,7 +53,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void testCreateProduct_whenProductRequestIsNotNullandValid_shouldCreateProductReturnProductDto() {
+    void testCreateProduct_whenProductRequestIsNotNullandValid_shouldCreateProductandReturnProductDto() {
         Product product = generateProduct();
         ProductDto expectedProductDto = generateProductDto(product);
 

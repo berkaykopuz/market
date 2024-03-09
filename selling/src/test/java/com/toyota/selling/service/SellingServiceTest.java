@@ -71,6 +71,39 @@ class SellingServiceTest {
     }
 
     @Test
+    void testMakeSale_whenRequestedProductIsAvailableAndRequestedAmountIsEqualOrLowerThanStockAndCampaignIsAvailable_shouldMakeSale2() {
+        List<SaleRequest> saleRequests = new ArrayList<>();
+        SaleRequest request = new SaleRequest(1L, 1, 1L);
+        saleRequests.add(request);
+
+        PaymentMethod paymentMethod = PaymentMethod.CREDIT_CARD;
+        String username = "testUser";
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setAmount(2);
+        product.setCategory("GIDA");
+        product.setUpdatedDate(LocalDateTime.now());
+        product.setPrice(1.0);
+
+        Campaign campaign = new Campaign();
+        campaign.setCampaignType(CampaignType.BUY_TWO_GET_ONE_FREE);
+        campaign.setStartDate(LocalDateTime.now().minusDays(1));
+        campaign.setEndDate(LocalDateTime.now().plusDays(1));
+        campaign.setDiscountRate(10);
+
+        Mockito.when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
+        Mockito.when(campaignRepository.findById(anyLong())).thenReturn(Optional.of(campaign));
+
+        String expected = "Sale is made.";
+        String result = sellingService.makeSale(saleRequests, paymentMethod, username);
+
+        assertEquals(expected, result);
+        Mockito.verify(productRepository, times(1)).findById(anyLong());
+        Mockito.verify(campaignRepository, times(1)).findById(anyLong());
+    }
+
+    @Test
     void testMakeSale_whenProductNotFound_shouldThrowProductNotException(){
         List<SaleRequest> saleRequests = new ArrayList<>();
         SaleRequest request = new SaleRequest(1L, 1, 1L);
@@ -109,7 +142,7 @@ class SellingServiceTest {
 
     @Test
     public void testMakeSale_whenCampaignIsNotAvailableWithinDateChart_shouldThrowCampaignNotFoundException() {
-        // Arrange
+
         List<SaleRequest> saleRequests = new ArrayList<>();
         SaleRequest request = new SaleRequest(1L, 1, 1L);
         saleRequests.add(request);
@@ -127,7 +160,6 @@ class SellingServiceTest {
         campaign.setEndDate(LocalDateTime.now().plusDays(2));
         when(campaignRepository.findById(anyLong())).thenReturn(Optional.of(campaign));
 
-        // Act and Assert
         assertThrows(CampaignNotFoundException.class, () -> {
             sellingService.makeSale(saleRequests, paymentMethod, username);
         });
