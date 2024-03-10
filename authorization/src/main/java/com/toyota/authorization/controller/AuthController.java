@@ -35,8 +35,4 @@ public class AuthController {
         return "Token is valid";
     }
 
-    @GetMapping("/username")
-    public String getUsernameFromToken(@RequestParam("token") String token){
-        return authService.getUsernameFromToken(token);
-    }
 }
