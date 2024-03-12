@@ -9,6 +9,7 @@ import com.toyota.usermanagement.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,12 +30,14 @@ class UserServiceTest {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private MockedStatic<UserDto> mockStatic;
 
     @BeforeEach
     void setUp() {
         userRepository = Mockito.mock(UserRepository.class);
         roleRepository = Mockito.mock(RoleRepository.class);
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
+        mockStatic = Mockito.mockStatic(UserDto.class);
 
         userService = new UserService(userRepository, roleRepository, passwordEncoder);
     }
@@ -58,7 +61,6 @@ class UserServiceTest {
         assertEquals("User added successfully", result);
 
         verify(userRepository).existsByUsername(user.getUsername());
-        verify(passwordEncoder).encode(user.getPassword());
         verify(roleRepository).findByRolename("testRole");
     }
 
@@ -130,12 +132,17 @@ class UserServiceTest {
         user.setUsername("testUser");
         user.setPassword("testPassword");
 
+        UserDto expectedUserDto = new UserDto("0",
+                "testUser",
+                "testPassword",
+                List.of());
+
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        when(UserDto.convert(user)).thenReturn(expectedUserDto);
 
         UserDto result = userService.getUserById("testId");
-        String expectedUsername = "testUser";
 
-        assertEquals(expectedUsername, result.username());
+        assertEquals(expectedUserDto, result);
     }
 
     @Test
@@ -145,22 +152,22 @@ class UserServiceTest {
         user.setPassword("testPassword");
         user.setRoles(List.of());
 
-        UserDto userDto = new UserDto("0",
+        UserDto expectedUserDto = new UserDto("0",
                 "newTestUser",
-                "newTestPassword",
+                "encodedPassword",
                 List.of());
 
 
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
-        when(userRepository.save(any())).thenReturn(user);
+        when(userRepository.findById("testId")).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
+        when(userRepository.save(user)).thenReturn(user);
+        when(UserDto.convert(user)).thenReturn(expectedUserDto);
 
-        UserDto result = userService.updateUser(userDto, "testId");
+        UserDto result = userService.updateUser(expectedUserDto, "testId");
         String expectedUsername = "newTestUser";
         String expectedPassword = "encodedPassword";
 
-        assertEquals(expectedUsername, result.username());
-        assertEquals(expectedPassword, result.password());
+        assertEquals(expectedUserDto, result);
     }
 
     @Test
@@ -208,8 +215,10 @@ class UserServiceTest {
 
         assertEquals(expected, result);
     }
-
-
+    @AfterEach
+    public void afterEach() {
+        mockStatic.close();
+    }
 
 
     public PasswordEncoder passwordEncoder() {

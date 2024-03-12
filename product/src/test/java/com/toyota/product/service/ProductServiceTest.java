@@ -57,7 +57,6 @@ class ProductServiceTest {
         Product product = generateProduct();
         ProductDto expectedProductDto = generateProductDto(product);
 
-        Mockito.doNothing().when(productRepository.save(product));
         Mockito.when(ProductDto.convert(productRepository.save(product))).thenReturn(expectedProductDto);
 
         ProductDto result = productService.createProduct(expectedProductDto);
@@ -65,7 +64,6 @@ class ProductServiceTest {
         assertEquals(expectedProductDto, result);
 
         Mockito.verify(productRepository).save(product);
-        Mockito.verify(ProductDto.convert(product));
 
     }
 

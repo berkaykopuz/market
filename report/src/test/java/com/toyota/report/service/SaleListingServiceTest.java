@@ -1,9 +1,15 @@
 package com.toyota.report.service;
 
+import com.toyota.report.entity.PaymentMethod;
+import com.toyota.report.entity.Product;
+import com.toyota.report.entity.ProductSale;
 import com.toyota.report.entity.Sale;
 import com.toyota.report.exception.SaleNotFoundException;
 import com.toyota.report.repository.ProductSaleRepository;
 import com.toyota.report.repository.SaleRepository;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,11 +18,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class SaleListingServiceTest {
@@ -26,8 +34,8 @@ class SaleListingServiceTest {
 
     @BeforeEach
     void setUp() {
-        productSaleRepository = Mockito.mock(ProductSaleRepository.class);
-        saleRepository = Mockito.mock(SaleRepository.class);
+        productSaleRepository = mock(ProductSaleRepository.class);
+        saleRepository = mock(SaleRepository.class);
 
         saleListingService = new SaleListingService (productSaleRepository, saleRepository);
     }
@@ -100,13 +108,68 @@ class SaleListingServiceTest {
 
         when(saleRepository.findById(billId)).thenThrow(new SaleNotFoundException("Sale not found with id: " + billId));
 
-
         assertThrows(SaleNotFoundException.class, () ->{
             saleListingService.getSale(billId);
         });
     }
 
     @Test
-    void createBillForSale() {
+    public void testCreateBillForSale_whenSaleIsFound_shouldCreatePdfDocument() throws IOException {
+
+        String billId = "123";
+        Sale sale = new Sale();
+        sale.setBillId(billId);
+        sale.setCashierName("testCashier");
+        sale.setSaleDate(LocalDateTime.now());
+        sale.setPaymentMethod(PaymentMethod.CREDIT_CARD);
+        sale.setTotalPrice(100.0);
+        sale.setPaidPrice(90.0);
+
+        ProductSale productSale = new ProductSale();
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("testProduct");
+        product.setPrice(50.0);
+        productSale.setProduct(product);
+        productSale.setSaledAmount(2);
+        sale.setProductSales(Set.of(productSale));
+
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        when(response.getOutputStream()).thenReturn(new ServletOutputStream() {
+            @Override
+            public boolean isReady() {
+                return false;
+            }
+
+            @Override
+            public void setWriteListener(WriteListener writeListener) {
+
+            }
+
+            @Override
+            public void write(int b) throws IOException {
+                outputStream.write(b);
+            }
+        });
+
+        when(saleRepository.findById(billId)).thenReturn(Optional.of(sale));
+
+        assertDoesNotThrow(() -> {
+            saleListingService.createBillForSale(response, billId);
+        });
     }
+
+    @Test
+    public void testCreateBillForSale_whenSaleIsNotFound_shouldThrowSaleNotFoundException() throws IOException {
+        String billId = "123";
+        when(saleRepository.findById(billId)).thenThrow(new SaleNotFoundException("Sale not found with id: " + billId));
+
+        HttpServletResponse response = mock(HttpServletResponse.class);
+
+        assertThrows(SaleNotFoundException.class, () -> {
+            saleListingService.createBillForSale(response, billId);
+        });
+    }
+
 }
