@@ -21,11 +21,23 @@ public class CampaignService {
         this.campaignRepository = campaignRepository;
     }
 
+    /**
+     * Retrieves all campaigns from the repository and returns them as a list of CampaignDto.
+     *
+     * @return A list of CampaignDto representing all campaigns.
+     */
     public List<CampaignDto> getAllCampaigns(){
         logger.info("Getting all campaigns");
         return campaignRepository.findAll().stream().map(CampaignDto::convert).collect(Collectors.toList());
     }
 
+    /**
+     * Creates a new campaign with the given campaign data.
+     *
+     * @param campaignDto The data transfer object containing campaign details.
+     * @return The CampaignDto of the saved campaign.
+     * @throws BadCampaignRequestException If any required fields are missing, invalid, or if the discount rate is not within the valid range, or if the campaign dates are not in the correct order or before the current time.
+     */
     public CampaignDto createCampaign(CampaignDto campaignDto){
         if (    campaignDto.name() == null ||
                 campaignDto.campaignType() == null ||
@@ -68,6 +80,12 @@ public class CampaignService {
         return CampaignDto.convert(campaignRepository.save(campaign));
     }
 
+    /**
+     * Deletes a campaign from the repository by its ID.
+     *
+     * @param campaignId The ID of the campaign to be deleted.
+     * @return A string message indicating whether the campaign was successfully deleted or not found.
+     */
     public String deleteCampaign(Long campaignId) {
         if(campaignRepository.existsById(campaignId)){
             campaignRepository.deleteById(campaignId);

@@ -29,6 +29,14 @@ public class UserService{
         this.encoder = encoder;
     }
 
+    /**
+     * Saves a new user to the repository with the specified role.
+     *
+     * @param user The User object to be saved.
+     * @param rolename The name of the role to be assigned to the user.
+     * @return A string message indicating the result of the operation.
+     * @throws NotFoundException if the role name does not exist in the repository.
+     */
     public String saveUser(User user, String rolename){
         String username = user.getUsername();
 
@@ -55,6 +63,12 @@ public class UserService{
         return "User added successfully";
     }
 
+    /**
+     * Saves a new role to the repository.
+     *
+     * @param role The Role object to be saved.
+     * @return A string message indicating the result of the operation.
+     */
     public String saveRole(Role role) {
         roleRepository.save(role);
 
@@ -62,6 +76,11 @@ public class UserService{
         return "Role added successfully";
     }
 
+    /**
+     * Retrieves all users from the repository and returns them as a list of UserDto.
+     *
+     * @return A list of UserDto representing all users.
+     */
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         List<UserDto> userDtos = users.stream()
@@ -73,6 +92,13 @@ public class UserService{
         return userDtos;
     }
 
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param userId The ID of the user to retrieve.
+     * @return The UserDto representation of the retrieved user.
+     * @throws NotFoundException if the user with the given ID is not found.
+     */
     public UserDto getUserById(String userId) {
         User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found."));
 
@@ -81,6 +107,14 @@ public class UserService{
 
     }
 
+    /**
+     * Updates a user's information based on the provided UserDto and ID.
+     *
+     * @param userDto The UserDto containing the updated user information.
+     * @param userId The ID of the user to update.
+     * @return The UserDto representation of the updated user.
+     * @throws NotFoundException if the user with the given ID is not found.
+     */
     public UserDto updateUser(UserDto userDto, String userId) {
         User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found."));
 
@@ -93,6 +127,13 @@ public class UserService{
         return UserDto.convert(updatedUser);
     }
 
+    /**
+     * Deletes a user from the repository by their ID.
+     *
+     * @param userId The ID of the user to delete.
+     * @return A string message indicating the result of the operation.
+     * @throws NotFoundException if the user with the given ID is not found.
+     */
     public String deleteUser(String userId) {
         if(userRepository.existsById(userId)){
             userRepository.deleteById(userId);

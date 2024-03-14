@@ -39,6 +39,14 @@ public class SellingService {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Processes a sale based on the provided sale requests and payment method.
+     *
+     * @param saleRequests A list of SaleRequest objects representing the items to be sold.
+     * @param paymentMethod The payment method to be used for the sale.
+     * @param username The username of the cashier making the sale.
+     * @return A string message indicating the result of the sale process.
+     */
     public String makeSale(List<SaleRequest> saleRequests, PaymentMethod paymentMethod, String username){
         double totalPrice = 0;
         double paidPrice = 0;
@@ -113,7 +121,13 @@ public class SellingService {
 
         return "Sale is made.";
     }
-
+    /**
+     * Calculates the price for a "Buy Two, Get One Free" sale.
+     *
+     * @param saleRequest The request containing the amount of product requested.
+     * @param product The product being purchased.
+     * @return The total price after applying the discount.
+     */
     private double buyTwoGetOneForFree(SaleRequest saleRequest, Product product){
         double price = 0;
 
@@ -124,6 +138,14 @@ public class SellingService {
         return price;
     }
 
+    /**
+     * Calculates the price for a sale with a flat discount rate.
+     *
+     * @param saleRequest The request containing the amount of product requested.
+     * @param product The product being purchased.
+     * @param campaign The campaign containing the discount rate.
+     * @return The total price after applying the flat discount.
+     */
     private double flatDiscount(SaleRequest saleRequest, Product product, Campaign campaign){
         double price = 0;
         price += (product.getPrice() * saleRequest.getRequestedAmount())
@@ -133,6 +155,13 @@ public class SellingService {
         return price;
     }
 
+    /**
+     * Calculates the price for a sale without any discounts.
+     *
+     * @param saleRequest The request containing the amount of product requested.
+     * @param product The product being purchased.
+     * @return The total price without any discounts.
+     */
     private double saleWithoutDiscount(SaleRequest saleRequest, Product product){
         double price = 0;
         price += product.getPrice() * saleRequest.getRequestedAmount();
