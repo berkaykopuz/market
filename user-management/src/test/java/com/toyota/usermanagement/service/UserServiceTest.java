@@ -127,7 +127,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUserById_whenUserIdExists_returnUserWithUserDto() {
+    void testGetUserById_whenUserExists_returnUserWithUserDto() {
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
@@ -143,6 +143,18 @@ class UserServiceTest {
         UserDto result = userService.getUserById("testId");
 
         assertEquals(expectedUserDto, result);
+    }
+
+    @Test
+    void testGetUserById_whenUserIsNotExist_shouldThrowNotFoundException() {
+        String userId = "0";
+
+        when(userRepository.findById(userId)).thenThrow(new NotFoundException("User not found."));
+
+
+        assertThrows(NotFoundException.class, () -> {
+            userService.getUserById(userId);
+        });
     }
 
     @Test
@@ -171,7 +183,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUser_whenUserIsNotExist_shouldThrowException(){
+    void testUpdateUser_whenUserIsNotExist_shouldThrowNotFoundException(){
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");

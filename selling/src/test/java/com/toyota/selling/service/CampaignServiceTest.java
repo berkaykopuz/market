@@ -104,7 +104,7 @@ class CampaignServiceTest {
     }
 
     @Test
-    void testDeleteUser_whenProductExist_shouldDeleteProduct() {
+    void testDeleteCampaign_whenCampaignExist_shouldDeleteCampaign() {
         Long campaignId = 1L;
 
         when(campaignRepository.existsById(campaignId)).thenReturn(true);
