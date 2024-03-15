@@ -39,7 +39,7 @@ public class UserController {
     }
 
 
-    @PutMapping("{id}/update")
+    @PutMapping("update/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") String userId, @RequestBody UserDto userDto){
         UserDto updatedUserDto = userService.updateUser(userDto,userId);
 
@@ -48,7 +48,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping("{id}/delete")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") String userId){
         return new ResponseEntity<>(userService.deleteUser(userId),HttpStatus.OK);
     }

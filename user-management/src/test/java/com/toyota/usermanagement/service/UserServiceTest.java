@@ -104,9 +104,8 @@ class UserServiceTest {
 
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(true);
 
-        assertThrows(BadRequestException.class, () -> {
-            userService.saveUser(user , any());
-        });
+        assertThrows(BadRequestException.class, () ->
+            userService.saveUser(user , any()));
 
         verify(userRepository).existsByUsername(user.getUsername());
     }
@@ -118,9 +117,9 @@ class UserServiceTest {
         user.setPassword("testPassword");
         String username = user.getUsername();
 
-        assertThrows(BadRequestException.class, () -> {
-            userService.saveUser(user , any());
-        });
+        assertThrows(BadRequestException.class, () ->
+            userService.saveUser(user , "rolename")
+        );
     }
 
     @Test
