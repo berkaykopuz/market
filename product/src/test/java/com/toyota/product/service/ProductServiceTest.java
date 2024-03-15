@@ -55,7 +55,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void testGetAllProducts_whenProductIsNotExist_shouldReturnEmptyList() {
+    void testGetAllProducts_whenProductDoesNotExist_shouldReturnEmptyList() {
         List<ProductDto> expected = new ArrayList<>();
 
         when(productRepository.findAll()).thenReturn(new ArrayList<>());
@@ -83,7 +83,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void testGetProductById_whenProductIsNotExist_shouldThrowProductNotFoundException() {
+    void testGetProductById_whenProductDoesNotExist_shouldThrowProductNotFoundException() {
         Long productId = 1L;
 
         Mockito.when(productRepository.findById(productId)).thenThrow(new ProductNotFoundException(

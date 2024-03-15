@@ -34,7 +34,7 @@ class CampaignServiceTest {
     }
 
     @Test
-    void testGetAllCampaigns_whenCampaignIsAvailable_shouldReturnCampaignsWithCampaignDto() {
+    void testGetAllCampaigns_whenCampaignExists_shouldReturnCampaignsWithCampaignDto() {
         List<Campaign> campaigns = new ArrayList<>();
         Campaign campaign = generateCampaign();
         campaigns.add(campaign);
@@ -104,7 +104,7 @@ class CampaignServiceTest {
     }
 
     @Test
-    void testDeleteCampaign_whenCampaignExist_shouldDeleteCampaign() {
+    void testDeleteCampaign_whenCampaignExists_shouldDeleteCampaign() {
         Long campaignId = 1L;
 
         when(campaignRepository.existsById(campaignId)).thenReturn(true);
@@ -117,7 +117,7 @@ class CampaignServiceTest {
     }
 
     @Test
-    void testDeleteCampaign_whenCampaignIsNotExist_shouldReturnExceptionMessage() {
+    void testDeleteCampaign_whenCampaignDoesNotExist_shouldReturnExceptionMessage() {
         Long campaignId = 1L;
 
         when(campaignRepository.existsById(campaignId)).thenReturn(false);

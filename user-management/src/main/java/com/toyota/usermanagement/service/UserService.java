@@ -3,6 +3,7 @@ package com.toyota.usermanagement.service;
 import com.toyota.usermanagement.dto.UserDto;
 import com.toyota.usermanagement.entity.Role;
 import com.toyota.usermanagement.entity.User;
+import com.toyota.usermanagement.exception.BadRequestException;
 import com.toyota.usermanagement.exception.NotFoundException;
 import com.toyota.usermanagement.repository.RoleRepository;
 import com.toyota.usermanagement.repository.UserRepository;
@@ -42,12 +43,12 @@ public class UserService{
 
         if(username.isEmpty()){
             logger.warn("Username must not be empty.");
-            return "Username mustn't be empty!";
+            throw new BadRequestException("Username must not be empty");
         }
 
         if(userRepository.existsByUsername(username)){
-            logger.warn("Username is already taken.");
-            return "Username is already taken! Please choose another one.";
+            logger.warn("Username is already taken");
+            throw new BadRequestException("Username is already taken");
         }
 
         String encodedPassword = encoder.encode(user.getPassword());
@@ -70,6 +71,15 @@ public class UserService{
      * @return A string message indicating the result of the operation.
      */
     public String saveRole(Role role) {
+        if(role.getRolename().isEmpty()){
+            logger.warn("Given role name is empty");
+            throw new BadRequestException("Role must not be empty");
+        }
+        if(roleRepository.existsByRolename(role.getRolename())){
+            logger.warn("Rolename is already taken");
+            throw new BadRequestException("Rolename is already taken");
+        }
+
         roleRepository.save(role);
 
         logger.info("Role added successfully");
@@ -100,7 +110,7 @@ public class UserService{
      * @throws NotFoundException if the user with the given ID is not found.
      */
     public UserDto getUserById(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found."));
+        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found"));
 
         logger.info("Getting user with id: " + userId);
         return UserDto.convert(user);
@@ -116,7 +126,7 @@ public class UserService{
      * @throws NotFoundException if the user with the given ID is not found.
      */
     public UserDto updateUser(UserDto userDto, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found."));
+        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found"));
 
         user.setUsername(userDto.username());
         user.setPassword(encoder.encode(userDto.password()));

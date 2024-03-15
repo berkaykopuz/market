@@ -3,6 +3,7 @@ package com.toyota.usermanagement.service;
 import com.toyota.usermanagement.dto.UserDto;
 import com.toyota.usermanagement.entity.Role;
 import com.toyota.usermanagement.entity.User;
+import com.toyota.usermanagement.exception.BadRequestException;
 import com.toyota.usermanagement.exception.NotFoundException;
 import com.toyota.usermanagement.repository.RoleRepository;
 import com.toyota.usermanagement.repository.UserRepository;
@@ -43,7 +44,20 @@ class UserServiceTest {
     }
 
     @Test
-    void testSaveUser_whenUsernameIsNotTakenBefore_shouldSaveUser() {  //!!! bakilacak
+    void testSaveRole() {
+
+        Role role = new Role();
+        role.setRolename("ROLE_USER");
+
+        String expected = "Role added successfully";
+        String result = userService.saveRole(role);
+
+        verify(roleRepository, times(1)).save(role);
+        assertEquals("Role added successfully", result);
+    }
+
+    @Test
+    void testSaveUser_whenUsernameIsNotTakenBeforeAndNotNull_shouldSaveUser() {  //!!! bakilacak
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
@@ -83,23 +97,34 @@ class UserServiceTest {
     }
 
     @Test
-    public void testSaveUser_whenUsernameIsAlreadyExist_shouldReturnMessage() {
+    public void testSaveUser_whenUsernameAlreadyExists_shouldReturnMessage() {
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
 
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(true);
 
-        String result = userService.saveUser(user, "testRole");
-        String expected = "Username is already taken! Please choose another one.";
-
-        assertEquals(expected, result);
+        assertThrows(BadRequestException.class, () -> {
+            userService.saveUser(user , any());
+        });
 
         verify(userRepository).existsByUsername(user.getUsername());
     }
 
     @Test
-    void shouldReturnAllUsersWithUserDto_whenUserExist() {
+    public void testSaveUser_whenUsernameIsNull_shouldReturnMessage() {
+        User user = new User();
+        user.setUsername("");
+        user.setPassword("testPassword");
+        String username = user.getUsername();
+
+        assertThrows(BadRequestException.class, () -> {
+            userService.saveUser(user , any());
+        });
+    }
+
+    @Test
+    void testGetAllUsers_whenUserExists_shouldReturnAllUsersWithUserDto() {
         User user1 = new User();
         user1.setUsername("testUser1");
         user1.setPassword("testPassword1");
@@ -146,10 +171,10 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUserById_whenUserIsNotExist_shouldThrowNotFoundException() {
+    void testGetUserById_whenUserDoesNotExist_shouldThrowNotFoundException() {
         String userId = "0";
 
-        when(userRepository.findById(userId)).thenThrow(new NotFoundException("User not found."));
+        when(userRepository.findById(userId)).thenThrow(new NotFoundException("User not found"));
 
 
         assertThrows(NotFoundException.class, () -> {
@@ -183,7 +208,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUser_whenUserIsNotExist_shouldThrowNotFoundException(){
+    void testUpdateUser_whenUserDoesNotExist_shouldThrowNotFoundException(){
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("testPassword");
@@ -194,7 +219,7 @@ class UserServiceTest {
                 "newTestPassword",
                 List.of());
 
-        when(userRepository.findById(any())).thenThrow(new NotFoundException("User not found."));
+        when(userRepository.findById(any())).thenThrow(new NotFoundException("User not found"));
 
         assertThrows(NotFoundException.class,
                 () -> userService.updateUser(userDto, any()));
@@ -204,7 +229,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUser_whenUserExist_shouldDeleteUser() {
+    void testDeleteUser_whenUserExists_shouldDeleteUser() {
         String userId = "0";
 
         when(userRepository.existsById(userId)).thenReturn(true);
@@ -217,7 +242,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUser_whenUserIsNotExist_shouldReturnMessage() {
+    void testDeleteUser_whenUserDoesNotExist_shouldReturnMessage() {
         String userId = "0";
 
         when(userRepository.existsById(userId)).thenReturn(false);

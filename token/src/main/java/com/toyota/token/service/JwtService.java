@@ -23,16 +23,32 @@ public class JwtService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Validates the JWT token's integrity and structure.
+     *
+     * @param token The JWT token to be validated.
+     */
     public void validateToken(final String token){
         Jwts.parserBuilder().setSigningKey(SECRET).build().parseClaimsJws(token);
     }
-
+    /**
+     * Generates a JWT token for a user with the given username.
+     *
+     * @param userName The username for which the token will be generated.
+     * @return A JWT token string for the user.
+     */
     public String generateToken(String userName) {
         Optional<User> user = userRepository.findByUsername(userName);
         Optional<List<Role>> roles = Optional.ofNullable(user.get().getRoles());
         return createToken(userName, roles.get());
     }
-
+    /**
+     * Creates a JWT token with the specified username and roles.
+     *
+     * @param username The subject for whom the token is being created.
+     * @param roles The roles that will be included in the token's claims.
+     * @return A JWT token string that includes the user's roles.
+     */
     public String createToken(String username, List<Role> roles) {
 
         Claims claims = Jwts.claims().setSubject(username);

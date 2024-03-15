@@ -69,7 +69,7 @@ class JwtServiceTest {
     }
 
     @Test //IS IT POSSIBLE THAT TWO PARTS IN ONE TEST FUNCTION POSSIBLE GENERATE-CREATE ?
-    void testCreateToken_whenUserIsAvailable_shouldReturnToken() {
+    void testCreateToken_whenUserExists_shouldReturnToken() {
         Role role = generateRole();
         List<Role> roles = new ArrayList<>();
         roles.add(role);
@@ -96,7 +96,7 @@ class JwtServiceTest {
     }
 
     @Test //IS IT POSSIBLE THAT TWO PARTS IN ONE TEST FUNCTION POSSIBLE GENERATE-CREATE ?
-    void testGenerateToken_whenUserIsNotAvailable_shouldThrowException() {
+    void testGenerateToken_whenUserDoesNotExist_shouldThrowException() {
         String username = "";
 
         when(userRepository.findByUsername(username)).thenThrow(new RuntimeException());

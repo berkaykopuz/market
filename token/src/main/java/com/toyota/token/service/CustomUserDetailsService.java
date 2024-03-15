@@ -22,6 +22,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Loads a user's details by their username.
+     *
+     * @param username The username of the user whose details are to be loaded.
+     * @return UserDetails containing the user's information.
+     * @throws UsernameNotFoundException if the username is not found in the repository.
+     */
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         User user = userRepository
@@ -31,6 +38,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .User(user.getUsername(),user.getPassword(), mapRoleToAuthorities(user.getRoles()));
     }
 
+    /**
+     * Maps a list of Role objects to a collection of GrantedAuthority.
+     *
+     * @param roleList The list of roles to be mapped.
+     * @return A collection of GrantedAuthority based on the provided roles.
+     */
     private Collection<GrantedAuthority> mapRoleToAuthorities(List<Role> roleList){
         return roleList.stream().map(role -> new SimpleGrantedAuthority(role.getRolename())).collect(Collectors.toList());
     }
