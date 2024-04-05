@@ -2,12 +2,16 @@ package com.toyota.product.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name="sales")
+@SQLDelete(sql="UPDATE sales SET deleted = true WHERE billId=?")
+@Where(clause = "deleted=false")
 public class Sale {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -22,4 +26,5 @@ public class Sale {
     @OneToMany(mappedBy = "sale",
             cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<ProductSale> productSales;
+    private boolean deleted = Boolean.FALSE;
 }

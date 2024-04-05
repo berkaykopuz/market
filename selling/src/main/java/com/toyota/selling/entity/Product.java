@@ -1,12 +1,16 @@
 package com.toyota.selling.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name="products")
+@SQLDelete(sql="UPDATE products SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +26,7 @@ public class Product {
     private LocalDateTime updatedDate;
     @OneToMany(mappedBy = "product")
     private Set<ProductSale> productSales;
+    private boolean deleted = Boolean.FALSE;
 
     public Product() {
     }

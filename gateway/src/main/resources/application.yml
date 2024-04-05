@@ -27,7 +27,7 @@ spring:
         - id: selling
           uri: lb://selling
           predicates:
-            - Path=/selling/**, /campaign/**, /product/**
+            - Path=/selling/**, /campaign/**, /product-modify/**
           filters:
             - SellingFilter
 

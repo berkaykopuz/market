@@ -79,12 +79,12 @@ public class ProductService {
     public String deleteProduct(Long productId) {
         if(productRepository.existsById(productId)){
             productRepository.deleteById(productId);
-            logger.info("Campaign deleted");
-            return "Campaign deleted";
+            logger.info("Product deleted");
+            return "Product deleted";
         }
         else{
-            logger.warn("Campaign not found with id: " + productId);
-            return "Campaign not found with id: " + productId;
+            logger.warn("Product not found with id: " + productId);
+            return "Product not found with id: " + productId;
         }
     }
 }
