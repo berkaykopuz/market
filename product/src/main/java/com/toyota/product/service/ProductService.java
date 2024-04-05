@@ -45,38 +45,4 @@ public class ProductService {
         logger.info("Getting product with id: " + product.getId());
         return ProductDto.convert(product);
     }
-
-    /**
-     * Function saves product entity by given request
-     * @param productDto productDto
-     * @return product
-     */
-    public ProductDto createProduct(ProductDto productDto){
-        if (    productDto.name() == null ||
-                productDto.amount() == null ||
-                productDto.price() == null ||
-                productDto.category() == null) {
-            logger.warn("Invalid product data. All fields are required.");
-            throw new BadProductRequestException("Invalid product data. All fields are required.");
-        }
-
-        if (    productDto.name().isEmpty() ||
-                productDto.amount() <= 0 ||
-                productDto.price() <= 0 ||
-                productDto.category().isEmpty()) {
-            logger.warn("Invalid product data. All fields must be valid.");
-            throw new BadProductRequestException("Invalid product data. All fields must be valid.");
-        }
-
-
-        Product product = new Product();
-        product.setName(productDto.name());
-        product.setAmount(productDto.amount());
-        product.setPrice(productDto.price());
-        product.setCategory(productDto.category());
-        product.setUpdatedDate(LocalDateTime.now());
-
-        logger.info("Creating new product object");
-        return ProductDto.convert(productRepository.save(product));
-    }
 }
