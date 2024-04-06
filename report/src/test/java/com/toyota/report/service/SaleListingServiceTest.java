@@ -12,18 +12,18 @@ import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,54 +41,48 @@ class SaleListingServiceTest {
     }
 
     @Test
-    void testFindBySaleDate_whenRequestIsValid_shouldReturnSalesWithSpecificDate() {
+    public void testGetSalesWithPaginationAndSortingByDate() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("field"));
+        Page<Sale> sales = new PageImpl<>(new ArrayList<>());
+        when(saleRepository.findBySaleDate(2022, 12, 31, pageable)).thenReturn(sales);
 
-        int year = 2022;
-        int month = 12;
-        int day = 31;
-        List<Sale> expectedSales = new ArrayList<>();
-        when(saleRepository.findBySaleDate(year, month, day)).thenReturn(expectedSales);
+        Page<Sale> result = saleListingService.getSalesWithPaginationAndSortingByDate(0,
+                10,
+                "field",
+                2022,
+                12,
+                31);
 
-        List<Sale> result = saleListingService.findBySaleDate(year, month, day);
-
-        assertEquals(expectedSales, result);
+        assertEquals(sales, result);
     }
 
     @Test
-    void testGetAllSales_whenPageRequestIsValid_shouldReturnAllDates() {
-        int pageNo = 0;
-        int pageSize = 2;
-        Page<Sale> expectedPage = new PageImpl<>(new ArrayList<>());
+    public void testGetSalesWithPaginationAndSortingByCashierName() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("field"));
 
-        when(saleRepository.findAll(PageRequest.of(pageNo, pageSize))).thenReturn(expectedPage);
+        Page<Sale> sales = new PageImpl<>(new ArrayList<>());
 
-        Page<Sale> result = saleListingService.getAllSales(pageNo, pageSize);
+        when(saleRepository.findByCashierName("cashier", pageable)).thenReturn(sales);
 
-        assertEquals(expectedPage, result);
+        Page<Sale> result = saleListingService.getSalesWithPaginationAndSortingByCashierName(0,
+                10,
+                "field",
+                "cashier");
+
+        assertEquals(sales, result);
     }
 
     @Test
-    void testGetAllSortedSales_whenSortUrlRequestIsValidAndAscend_shouldReturnAllSalesByRequestedOrder() {
-        String sortBy = "date";
-        String sortOrder = "asc";
-        List<Sale> expectedSales = new ArrayList<>();
-        when(saleRepository.findAll(Sort.by(sortBy).ascending())).thenReturn(expectedSales);
+    public void testGetAllSalesWithPaginationAndSorting() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("field"));
+        Page<Sale> sales = new PageImpl<>(new ArrayList<>());
+        when(saleRepository.findAll(eq(pageable))).thenReturn(sales);
 
-        List<Sale> result = saleListingService.getAllSortedSales(sortBy, sortOrder);
+        Page<Sale> result = saleListingService.getAllSalesWithPaginationAndSorting(0,
+                10,
+                "field");
 
-        assertEquals(expectedSales, result);
-    }
-
-    @Test
-    void testGetAllSortedSales_whenSortUrlRequestIsValidAndDescend_shouldReturnAllSalesByRequestedOrder() {
-        String sortBy = "date";
-        String sortOrder = "desc";
-        List<Sale> expectedSales = new ArrayList<>();
-        when(saleRepository.findAll(Sort.by(sortBy).ascending())).thenReturn(expectedSales);
-
-        List<Sale> result = saleListingService.getAllSortedSales(sortBy, sortOrder);
-
-        assertEquals(expectedSales, result);
+        assertEquals(sales, result);
     }
 
     @Test
@@ -171,5 +165,4 @@ class SaleListingServiceTest {
             saleListingService.createBillForSale(response, billId);
         });
     }
-
 }

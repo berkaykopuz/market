@@ -26,21 +26,31 @@ public class SaleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sale>> searchBySaleDate(@RequestParam int year,
-                                                       @RequestParam int month,
-                                                       @RequestParam int day){
-        return new ResponseEntity<>(saleListingService.findBySaleDate(year, month, day), HttpStatus.OK);
-    }
+    public ResponseEntity<Page<Sale>> getAllPaged(@RequestParam(value="pageNo",defaultValue = "0") int pageNo,
+                                                  @RequestParam(value="pageSize",defaultValue = "1") int pageSize,
+                                                  @RequestParam String field,
+                                                  @RequestParam(required = false) Integer year,
+                                                  @RequestParam(required = false) Integer month,
+                                                  @RequestParam(required = false) Integer day,
+                                                  @RequestParam(required = false) String cashierName){
+        if(cashierName != null){
+            return new ResponseEntity<>(saleListingService.getSalesWithPaginationAndSortingByCashierName(pageNo,
+                    pageSize,
+                    field,
+                    cashierName) ,HttpStatus.OK);
+        }else if(year != null && month != null && day != null){
+            return new ResponseEntity<>(saleListingService.getSalesWithPaginationAndSortingByDate(pageNo,
+                    pageSize,
+                    field,
+                    year,
+                    month,
+                    day) ,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(saleListingService.getAllSalesWithPaginationAndSorting(pageNo, pageSize, field),
+                    HttpStatus.OK);
+        }
 
-    @GetMapping("paged")
-    public ResponseEntity<Page<Sale>> getAllPaged(@RequestParam(value="pageNo",defaultValue = "0",required = false) int pageNo,
-                                                  @RequestParam(value="pageSize",defaultValue = "1",required = false) int pageSize){
-        return new ResponseEntity<>(saleListingService.getAllSales(pageNo, pageSize),HttpStatus.OK);
-    }
-
-    @GetMapping("sorted")
-    public ResponseEntity<List<Sale>> getAllSorted(@RequestParam String sortBy, @RequestParam String sortOrder){
-        return new ResponseEntity<>(saleListingService.getAllSortedSales(sortBy, sortOrder), HttpStatus.OK);
     }
 
     @GetMapping("createbill")

@@ -38,44 +38,58 @@ public class SaleListingService {
     }
 
     /**
-     * Finds sales by the specified sale date.
+     * Retrieves a page of sales made on a specific date, sorted by a specified field.
      *
-     * @param year The year of the sale date to search for.
-     * @param month The month of the sale date to search for.
-     * @param day The day of the sale date to search for.
-     * @return A list of Sale objects that match the specified sale date.
+     * @param pageNumber The number of the page to retrieve.
+     * @param pageSize The number of sales per page.
+     * @param field The field to sort the sales by.
+     * @param year The year of the sale date.
+     * @param month The month of the sale date.
+     * @param day The day of the sale date.
+     * @return A page of sales made on the specified date, sorted by the specified field.
      */
-    public List<Sale> findBySaleDate(int year, int month, int day){
-        return saleRepository.findBySaleDate(year, month, day);
+    public Page<Sale> getSalesWithPaginationAndSortingByDate(int pageNumber, int pageSize, String field,
+                                                       int year, int month, int day){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
+
+        Page<Sale> sales = saleRepository.findBySaleDate(year, month, day, pageable);
+
+        return sales;
     }
+
     /**
-     * Retrieves a paginated list of all sales.
+     * Retrieves a page of sales made by a specific cashier, sorted by a specified field.
      *
-     * @param pageNo The page number to retrieve.
-     * @param pageSize The number of items per page.
-     * @return A Page object containing Sale objects for the requested page.
+     * @param pageNumber The number of the page to retrieve.
+     * @param pageSize The number of sales per page.
+     * @param field The field to sort the sales by.
+     * @param cashierName The name of the cashier.
+     * @return A page of sales made by the specified cashier, sorted by the specified field.
      */
-    public Page<Sale> getAllSales(int pageNo, int pageSize){
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public Page<Sale> getSalesWithPaginationAndSortingByCashierName(int pageNumber, int pageSize, String field,
+                                                             String cashierName){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
 
-        Page<Sale> salePage = saleRepository.findAll(pageable);
+        Page<Sale> sales = saleRepository.findByCashierName(cashierName, pageable);
 
-        logger.info("Getting all sales from database");
-        return salePage;
+        return sales;
     }
-    /**
-     * Retrieves all sales sorted by the specified field and order.
-     *
-     * @param sortBy The field to sort by.
-     * @param sortOrder The order of sorting, either "ASC" for ascending or "DESC" for descending.
-     * @return A sorted list of Sale objects.
-     */
-    public List<Sale> getAllSortedSales(String sortBy, String sortOrder){
-        Sort sort = sortOrder.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
-                Sort.by(sortBy).descending();
 
-        logger.info("Getting all sorted sales");
-        return saleRepository.findAll(sort);
+    /**
+     * Retrieves all sales, paginated and sorted by a specified field.
+     *
+     * @param pageNumber The number of the page to retrieve.
+     * @param pageSize The number of sales per page.
+     * @param field The field to sort the sales by.
+     * @return A page of all sales, sorted by the specified field.
+     */
+    public Page<Sale> getAllSalesWithPaginationAndSorting(int pageNumber, int pageSize, String field){
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
+
+        Page<Sale> sales = saleRepository.findAll(pageable);
+
+        return sales;
     }
     /**
      * Retrieves a specific sale by its bill ID.
@@ -87,6 +101,7 @@ public class SaleListingService {
     public Sale getSale(String billId){
         Sale sale = saleRepository.findById(billId)
                 .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + billId));
+
         logger.info("Getting specific sale with id:" + billId);
         return sale;
     }
