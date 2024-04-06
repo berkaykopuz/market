@@ -76,7 +76,7 @@ public class SaleListingService {
     }
 
     /**
-     * Retrieves all sales, paginated and sorted by a specified field.
+     * Retrieves all sales, paginated and sorted by a specified field....
      *
      * @param pageNumber The number of the page to retrieve.
      * @param pageSize The number of sales per page.
