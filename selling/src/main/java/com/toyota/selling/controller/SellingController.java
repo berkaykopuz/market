@@ -30,4 +30,9 @@ public class SellingController {
         return new ResponseEntity<>(sellingService.makeSale(body.getSaleRequests(), body.getPaymentMethod(), username),
                 HttpStatus.OK);
     }
+
+    @DeleteMapping("delete/{billId}")
+    public ResponseEntity<String> returnTheSale(@PathVariable("billId") String billId){
+        return new ResponseEntity<>(sellingService.returnTheSale(billId), HttpStatus.OK);
+    }
 }

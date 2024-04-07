@@ -13,9 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -163,5 +161,26 @@ class SellingServiceTest {
         assertThrows(CampaignNotFoundException.class, () -> {
             sellingService.makeSale(saleRequests, paymentMethod, username);
         });
+    }
+
+    @Test
+    public void testReturnTheSale_whenSaleIsFoundAndProductIsAvailable_shouldUpdateProductAmountsAndDeleteSale() {
+        String billId = "testBillId";
+        Sale sale = new Sale();
+        ProductSale productSale = new ProductSale();
+        sale.setProductSales(Set.of(productSale));
+
+        Product product = new Product();
+        productSale.setProduct(product);
+        productSale.setSaledAmount(5);
+        product.setAmount(10);
+
+        when(saleRepository.findById(billId)).thenReturn(Optional.of(sale));
+
+        String result = sellingService.returnTheSale(billId);
+
+        assertEquals("Sale is returned with id: " + billId, result);
+        Mockito.verify(productRepository, times(1)).save(product);
+        Mockito.verify(saleRepository, times(1)).delete(sale);
     }
 }

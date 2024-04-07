@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="sales")
-@SQLDelete(sql="UPDATE sales SET deleted = true WHERE billId=?")
+@SQLDelete(sql="UPDATE sales SET deleted = true WHERE bill_id=?")
 @Where(clause = "deleted=false")
 public class Sale {
     @Id

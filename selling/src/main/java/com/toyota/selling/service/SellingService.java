@@ -3,10 +3,7 @@ package com.toyota.selling.service;
 import com.toyota.selling.dto.SaleDto;
 import com.toyota.selling.dto.SaleRequest;
 import com.toyota.selling.entity.*;
-import com.toyota.selling.exception.BadCampaignRequestException;
-import com.toyota.selling.exception.BadSaleRequestException;
-import com.toyota.selling.exception.CampaignNotFoundException;
-import com.toyota.selling.exception.ProductNotFoundException;
+import com.toyota.selling.exception.*;
 import com.toyota.selling.repository.CampaignRepository;
 import com.toyota.selling.repository.ProductRepository;
 import com.toyota.selling.repository.SaleRepository;
@@ -121,6 +118,41 @@ public class SellingService {
 
         return "Sale is made.";
     }
+
+    /**
+     * Returns a sale by its bill ID. If the sale is found, it iterates over the products in the sale.
+     * If a product is found, it increases the product's amount by the sold amount and saves the product.
+     * If no product is found, it logs a warning and throws a ProductNotFoundException.
+     * Finally, it deletes the sale from the repository and returns a success message.
+     *
+     * @param billId The ID of the bill for the sale to be returned.
+     * @return A success message indicating the sale has been returned.
+     * @throws SaleNotFoundException If the sale is not found.
+     * @throws ProductNotFoundException If a product in the sale is not found.
+     */
+    public String returnTheSale(String billId){
+        Sale sale = saleRepository.findById(billId)
+                .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + billId));
+
+        for(ProductSale ps : sale.getProductSales()){
+            if(ps.getProduct() != null){
+                Product product = ps.getProduct();
+
+                int newAmount = product.getAmount() + ps.getSaledAmount();
+                product.setAmount(newAmount);
+
+                productRepository.save(product);
+            }else{
+                logger.warn("Product not found");
+                throw new ProductNotFoundException("Product not found");
+            }
+        }
+
+        saleRepository.delete(sale);
+
+        return "Sale is returned with id: " + billId;
+    }
+
     /**
      * Calculates the price for a "Buy Two, Get One Free" sale.
      *
@@ -168,4 +200,6 @@ public class SellingService {
 
         return price;
     }
+
+
 }
