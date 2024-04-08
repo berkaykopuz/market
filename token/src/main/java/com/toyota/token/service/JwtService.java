@@ -58,7 +58,7 @@ public class JwtService {
 
 
         Date issuedAt = new Date();
-        Date validUntil = new Date(issuedAt.getTime() + 3600000);
+        Date validUntil = new Date(issuedAt.getTime() + 36000000);
 
         return Jwts
                 .builder()

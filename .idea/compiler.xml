@@ -12,11 +12,11 @@
         <module name="selling" />
         <module name="eureka-server" />
         <module name="gateway" />
+        <module name="token" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-server" target="17" />
-      <module name="token" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
