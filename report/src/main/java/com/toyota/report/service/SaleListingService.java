@@ -117,9 +117,15 @@ public class SaleListingService {
         Sale sale = getSale(billId);
 
         Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, response.getOutputStream());
+        PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 
         document.open();
+
+        Image image = Image.getInstance("./app/images/background.jpg");
+        image.scaleToFit(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+        image.setAbsolutePosition(0, 0);
+        writer.getDirectContentUnder().addImage(image);
+
         Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD);
         fontHeader.setSize(22);
 

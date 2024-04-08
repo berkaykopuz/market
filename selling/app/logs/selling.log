@@ -3323,3 +3323,8 @@ com.netflix.discovery.shared.transport.TransportException: Cannot execute reques
 2024-04-07 13:03:39.852 WARN [main] [com.toyota.selling.service.SellingService.makeSale(SellingService.java:60)] - Requested amount must not be higher than available value.
 2024-04-07 13:03:39.863 INFO [main] [com.toyota.selling.service.SellingService.makeSale(SellingService.java:117)] - Requested sale has completed
 2024-04-07 13:03:39.867 WARN [main] [com.toyota.selling.service.SellingService.makeSale(SellingService.java:97)] - Requested campaign is not available now.
+2024-04-07 13:06:09.023 INFO [main] [com.toyota.selling.service.ProductService.deleteProduct(ProductService.java:82)] - Product deleted
+2024-04-07 13:06:09.042 WARN [main] [com.toyota.selling.service.ProductService.createProduct(ProductService.java:41)] - Invalid product data. All fields must be valid.
+2024-04-07 13:06:09.052 WARN [main] [com.toyota.selling.service.ProductService.deleteProduct(ProductService.java:86)] - Product not found with id: 1
+2024-04-07 13:06:09.092 INFO [main] [com.toyota.selling.service.ProductService.createProduct(ProductService.java:53)] - Creating new product object
+2024-04-07 13:06:09.097 WARN [main] [com.toyota.selling.service.ProductService.createProduct(ProductService.java:33)] - Invalid product data. All fields are required.

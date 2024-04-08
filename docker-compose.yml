@@ -91,6 +91,7 @@ services:
     image: report:latest
     volumes:
       - /app/logs
+      - /app/images
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
