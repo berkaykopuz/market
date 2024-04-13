@@ -1,6 +1,7 @@
 package com.toyota.usermanagement.controller;
 
 import com.toyota.usermanagement.dto.UserDto;
+import com.toyota.usermanagement.dto.UserResponse;
 import com.toyota.usermanagement.entity.Role;
 import com.toyota.usermanagement.entity.User;
 import com.toyota.usermanagement.service.UserService;
@@ -28,23 +29,20 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers(){
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 
     @GetMapping("{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable String id){
+    public ResponseEntity<UserResponse> getUserById(@PathVariable String id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
 
     @PutMapping("update/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") String userId, @RequestBody UserDto userDto){
-        UserDto updatedUserDto = userService.updateUser(userDto,userId);
-
-        return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
-
+    public ResponseEntity<UserResponse> updateUser(@PathVariable("id") String userId, @RequestBody UserDto userDto){
+        return new ResponseEntity<>(userService.updateUser(userDto, userId), HttpStatus.OK);
     }
 
 

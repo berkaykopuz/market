@@ -1,6 +1,7 @@
 package com.toyota.usermanagement.service;
 
 import com.toyota.usermanagement.dto.UserDto;
+import com.toyota.usermanagement.dto.UserResponse;
 import com.toyota.usermanagement.entity.Role;
 import com.toyota.usermanagement.entity.User;
 import com.toyota.usermanagement.exception.BadRequestException;
@@ -32,6 +33,7 @@ class UserServiceTest {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private MockedStatic<UserDto> mockStatic;
+    private MockedStatic<UserResponse> mockStatic2;
 
     @BeforeEach
     void setUp() {
@@ -39,6 +41,7 @@ class UserServiceTest {
         roleRepository = Mockito.mock(RoleRepository.class);
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
         mockStatic = Mockito.mockStatic(UserDto.class);
+        mockStatic2 = Mockito.mockStatic(UserResponse.class);
 
         userService = new UserService(userRepository, roleRepository, passwordEncoder);
     }
@@ -134,16 +137,16 @@ class UserServiceTest {
         user2.setPassword("testPassword2");
         user2.setRoles(List.of());
 
-        UserDto userDto1 = new UserDto("0", "testUser1", "testPassword1", List.of());
-        UserDto userDto2 = new UserDto("1", "testUser2", "testPassword2", List.of());
+        UserResponse userResponse1 = new UserResponse("0", "testUser1",  List.of());
+        UserResponse userResponse2 = new UserResponse("1", "testUser2",  List.of());
 
-        List<UserDto> expectedResult = Arrays.asList(userDto1, userDto2);
+        List<UserResponse> expectedResult = Arrays.asList(userResponse1, userResponse2);
 
         when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
-        when(UserDto.convert(user1)).thenReturn(userDto1);
-        when(UserDto.convert(user2)).thenReturn(userDto2);
+        when(UserResponse.convert(user1)).thenReturn(userResponse1);
+        when(UserResponse.convert(user2)).thenReturn(userResponse2);
 
-        List<UserDto> result = userService.getAllUsers();
+        List<UserResponse> result = userService.getAllUsers();
 
         assertEquals(result, expectedResult);
 
@@ -156,17 +159,16 @@ class UserServiceTest {
         user.setUsername("testUser");
         user.setPassword("testPassword");
 
-        UserDto expectedUserDto = new UserDto("0",
+        UserResponse expectedUserResponse = new UserResponse("0",
                 "testUser",
-                "testPassword",
                 List.of());
 
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        when(UserDto.convert(user)).thenReturn(expectedUserDto);
+        when(UserResponse.convert(user)).thenReturn(expectedUserResponse);
 
-        UserDto result = userService.getUserById("testId");
+        UserResponse result = userService.getUserById("testId");
 
-        assertEquals(expectedUserDto, result);
+        assertEquals(expectedUserResponse, result);
     }
 
     @Test
@@ -188,22 +190,25 @@ class UserServiceTest {
         user.setPassword("testPassword");
         user.setRoles(List.of());
 
-        UserDto expectedUserDto = new UserDto("0",
-                "newTestUser",
-                "encodedPassword",
+        UserDto userDto = new UserDto("0",
+                "testUser",
+                "testPassword",
                 List.of());
 
+        UserResponse expectedUserResponse = new UserResponse("0",
+                "testUser",
+                List.of());
 
         when(userRepository.findById("testId")).thenReturn(Optional.of(user));
         when(passwordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
         when(userRepository.save(user)).thenReturn(user);
-        when(UserDto.convert(user)).thenReturn(expectedUserDto);
+        when(UserResponse.convert(user)).thenReturn(expectedUserResponse);
 
-        UserDto result = userService.updateUser(expectedUserDto, "testId");
+        UserResponse result = userService.updateUser(userDto, "testId");
         String expectedUsername = "newTestUser";
         String expectedPassword = "encodedPassword";
 
-        assertEquals(expectedUserDto, result);
+        assertEquals(expectedUserResponse, result);
     }
 
     @Test
@@ -254,6 +259,7 @@ class UserServiceTest {
     @AfterEach
     public void afterEach() {
         mockStatic.close();
+        mockStatic2.close();
     }
 
 

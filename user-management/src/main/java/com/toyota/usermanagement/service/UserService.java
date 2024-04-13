@@ -1,6 +1,7 @@
 package com.toyota.usermanagement.service;
 
 import com.toyota.usermanagement.dto.UserDto;
+import com.toyota.usermanagement.dto.UserResponse;
 import com.toyota.usermanagement.entity.Role;
 import com.toyota.usermanagement.entity.User;
 import com.toyota.usermanagement.exception.BadRequestException;
@@ -91,15 +92,15 @@ public class UserService{
      *
      * @return A list of UserDto representing all users.
      */
-    public List<UserDto> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         List<User> users = userRepository.findAll();
-        List<UserDto> userDtos = users.stream()
-                .map(UserDto::convert)
+        List<UserResponse> userResponses = users.stream()
+                .map(UserResponse::convert)
                 .collect(Collectors.toList());
 
         logger.info("Getting all users");
 
-        return userDtos;
+        return userResponses;
     }
 
     /**
@@ -109,11 +110,11 @@ public class UserService{
      * @return The UserDto representation of the retrieved user.
      * @throws NotFoundException if the user with the given ID is not found.
      */
-    public UserDto getUserById(String userId) {
+    public UserResponse getUserById(String userId) {
         User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found"));
 
         logger.info("Getting user with id: " + userId);
-        return UserDto.convert(user);
+        return UserResponse.convert(user);
 
     }
 
@@ -125,7 +126,7 @@ public class UserService{
      * @return The UserDto representation of the updated user.
      * @throws NotFoundException if the user with the given ID is not found.
      */
-    public UserDto updateUser(UserDto userDto, String userId) {
+    public UserResponse updateUser(UserDto userDto, String userId) {
         User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException("User not found"));
 
         user.setUsername(userDto.username());
@@ -134,7 +135,7 @@ public class UserService{
         User updatedUser = userRepository.save(user);
 
         logger.info("Updating user object");
-        return UserDto.convert(updatedUser);
+        return UserResponse.convert(updatedUser);
     }
 
     /**
