@@ -63,7 +63,7 @@ public class CampaignService {
         }
 
         if(campaignDto.endDate().isBefore(campaignDto.startDate()) ||
-            campaignDto.endDate().isBefore(LocalDateTime.now())){
+            campaignDto.endDate().isBefore(LocalDateTime.now().plusHours(3))){
 
             logger.warn("Campaign dates must not before now");
             throw new BadCampaignRequestException("Campaign dates must not before now");

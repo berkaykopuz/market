@@ -48,7 +48,7 @@ public class ProductService {
         product.setAmount(productDto.amount());
         product.setPrice(productDto.price());
         product.setCategory(productDto.category());
-        product.setUpdatedDate(LocalDateTime.now());
+        product.setUpdatedDate(LocalDateTime.now().plusHours(3));
 
         logger.info("Creating new product object");
         return ProductDto.convert(productRepository.save(product));
@@ -64,7 +64,7 @@ public class ProductService {
             existingProduct.setAmount(updatedProductDto.amount());
             existingProduct.setPrice(updatedProductDto.price());
             existingProduct.setCategory(updatedProductDto.category());
-            existingProduct.setUpdatedDate(LocalDateTime.now());
+            existingProduct.setUpdatedDate(LocalDateTime.now().plusHours(3));
 
             Product updatedProduct = productRepository.save(existingProduct);
 

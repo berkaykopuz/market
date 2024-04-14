@@ -65,20 +65,25 @@ public class SellingService {
             productSale.setProduct(product);
             productSale.setSaledAmount(s.getRequestedAmount());
             productSale.setSale(sale);
+            productSale.setSaledPrice(product.getPrice());
 
             productSales.add(productSale);
 
             if(s.getCampaignId() == null){ //null check
                 campaignId = -1;
+                productSale.setUsedCampaign("Campaign Not Implemented");
             }else{
                 campaignId = s.getCampaignId();
             }
 
             Optional<Campaign> campaign = campaignRepository.findById(campaignId);
+
             if(campaign.isPresent()){
-                if(LocalDateTime.now().isAfter(campaign.get().getStartDate()) &&
-                        LocalDateTime.now().isBefore(campaign.get().getEndDate())
+                if(LocalDateTime.now().plusHours(3).isAfter(campaign.get().getStartDate()) &&
+                        LocalDateTime.now().plusHours(3).isBefore(campaign.get().getEndDate())
                 ){
+                    productSale.setUsedCampaign(campaign.get().getName());
+
                     switch(campaign.get().getCampaignType()){
                         case BUY_TWO_GET_ONE_FREE:
                             paidPrice += buyTwoGetOneForFree(s, product);
@@ -94,8 +99,9 @@ public class SellingService {
                     }
                 }
                 else{
-                    logger.warn("Requested campaign is not available now.");
-                    throw new CampaignNotFoundException("Requested campaign is not available now."); //change
+                    productSale.setUsedCampaign("Campaign Not Implemented");
+                    logger.warn("Requested campaign's date is expired.");
+                    throw new CampaignNotFoundException("Requested campaign's date is expired.");
                 }
 
             }
@@ -107,7 +113,7 @@ public class SellingService {
         }
 
         sale.setProductSales(productSales);
-        sale.setSaleDate(LocalDateTime.now());
+        sale.setSaleDate(LocalDateTime.now().plusHours(3));
         sale.setPaidPrice(paidPrice);
         sale.setTotalPrice(totalPrice);
         sale.setPaymentMethod(paymentMethod);

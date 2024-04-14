@@ -1,82 +1,12 @@
-2024-04-08 14:02:28.460 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 18252 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:02:28.478 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:02:28.653 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.624 seconds (process running for 2.095)
-2024-04-08 14:02:30.551 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:02:30.572 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:05:00.854 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 2464 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:05:00.867 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:05:01.033 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.591 seconds (process running for 1.781)
-2024-04-08 14:05:02.312 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:05:02.327 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:05:02.516 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:186)] - Creating bill for requested sale with id: 123
-2024-04-08 14:26:56.380 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 21964 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:26:56.394 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:26:56.666 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.965 seconds (process running for 2.514)
-2024-04-08 14:26:58.693 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:26:58.714 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:28:40.001 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 9084 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:28:40.018 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:28:40.228 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.624 seconds (process running for 1.828)
-2024-04-08 14:28:41.711 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:28:41.733 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:30:48.062 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 14948 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:30:48.078 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:30:48.263 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.607 seconds (process running for 1.734)
-2024-04-08 14:30:49.623 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:30:49.644 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:31:21.046 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 21992 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:31:21.057 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:31:21.242 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.596 seconds (process running for 1.717)
-2024-04-08 14:31:22.635 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:31:22.655 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:31:50.135 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 2824 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:31:50.157 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:31:50.379 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.672 seconds (process running for 1.839)
-2024-04-08 14:31:51.786 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:31:51.807 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:32:24.541 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 9420 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:32:24.562 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:32:24.787 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.834 seconds (process running for 2.225)
-2024-04-08 14:32:26.363 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:32:26.386 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:33:11.344 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 11760 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:33:11.361 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:33:11.567 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.63 seconds (process running for 1.85)
-2024-04-08 14:33:13.052 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:33:13.075 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:33:13.353 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:186)] - Creating bill for requested sale with id: 123
-2024-04-08 14:44:20.588 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 7816 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:44:20.600 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:44:20.795 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.655 seconds (process running for 1.977)
-2024-04-08 14:44:22.244 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:44:22.256 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:44:44.724 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 9984 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:44:44.734 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:44:44.909 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.584 seconds (process running for 1.901)
-2024-04-08 14:44:46.223 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:44:46.238 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:44:46.418 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:186)] - Creating bill for requested sale with id: 123
-2024-04-08 14:53:13.860 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 4428 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 14:53:13.881 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 14:53:14.150 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.798 seconds (process running for 2.326)
-2024-04-08 14:53:16.160 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:53:16.193 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 14:53:16.704 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:187)] - Creating bill for requested sale with id: 123
-2024-04-08 15:08:27.840 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 22052 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 15:08:27.856 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 15:08:28.033 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.611 seconds (process running for 1.941)
-2024-04-08 15:08:29.479 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 15:08:29.497 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 15:08:29.785 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:187)] - Creating bill for requested sale with id: 123
-2024-04-08 15:12:27.484 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 9536 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 15:12:27.493 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 15:12:27.660 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.676 seconds (process running for 1.987)
-2024-04-08 15:12:29.013 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 15:12:29.029 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 15:12:29.348 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:187)] - Creating bill for requested sale with id: 123
-2024-04-08 15:14:48.512 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 8388 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
-2024-04-08 15:14:48.525 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
-2024-04-08 15:14:48.727 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.642 seconds (process running for 1.957)
-2024-04-08 15:14:50.025 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 15:14:50.040 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
-2024-04-08 15:14:50.326 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:187)] - Creating bill for requested sale with id: 123
+2024-04-14 17:11:54.953 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 4068 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
+2024-04-14 17:11:54.976 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
+2024-04-14 17:11:55.160 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.632 seconds (process running for 1.78)
+2024-04-14 17:11:56.995 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
+2024-04-14 17:11:57.016 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
+2024-04-14 17:11:57.386 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:190)] - Creating bill for requested sale with id: 123
+2024-04-14 17:27:45.130 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:50)] - Starting ReportApplicationTests using Java 17.0.8 with PID 15784 (started by Berkay Kopuz in C:\Users\Berkay Kopuz\Desktop\Projelerim\Toyota\market\report)
+2024-04-14 17:27:45.143 INFO [main] [org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:654)] - No active profile set, falling back to 1 default profile: "default"
+2024-04-14 17:27:45.355 INFO [main] [org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:56)] - Started ReportApplicationTests in 0.697 seconds (process running for 2.098)
+2024-04-14 17:27:47.270 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
+2024-04-14 17:27:47.295 INFO [main] [com.toyota.report.service.SaleListingService.getSale(SaleListingService.java:105)] - Getting specific sale with id:123
+2024-04-14 17:27:47.688 INFO [main] [com.toyota.report.service.SaleListingService.createBillForSale(SaleListingService.java:190)] - Creating bill for requested sale with id: 123

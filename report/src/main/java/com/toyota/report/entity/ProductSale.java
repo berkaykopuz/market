@@ -21,6 +21,25 @@ public class ProductSale {
 
     private int saledAmount;
 
+    private double saledPrice;
+    private String usedCampaign;
+
+    public double getSaledPrice() {
+        return saledPrice;
+    }
+
+    public void setSaledPrice(double saledPrice) {
+        this.saledPrice = saledPrice;
+    }
+
+    public String getUsedCampaign() {
+        return usedCampaign;
+    }
+
+    public void setUsedCampaign(String usedCampaign) {
+        this.usedCampaign = usedCampaign;
+    }
+
     public ProductSale() {
     }
 

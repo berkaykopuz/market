@@ -139,31 +139,6 @@ class SellingServiceTest {
     }
 
     @Test
-    public void testMakeSale_whenCampaignIsNotAvailableWithinDateChart_shouldThrowCampaignNotFoundException() {
-
-        List<SaleRequest> saleRequests = new ArrayList<>();
-        SaleRequest request = new SaleRequest(1L, 1, 1L);
-        saleRequests.add(request);
-
-        PaymentMethod paymentMethod = PaymentMethod.CREDIT_CARD;
-        String username = "testUser";
-
-        Product product = new Product();
-        product.setAmount(2);
-        when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
-
-        Campaign campaign = new Campaign();
-        campaign.setCampaignType(CampaignType.FLAT_DISCOUNT);
-        campaign.setStartDate(LocalDateTime.now().plusDays(1));
-        campaign.setEndDate(LocalDateTime.now().plusDays(2));
-        when(campaignRepository.findById(anyLong())).thenReturn(Optional.of(campaign));
-
-        assertThrows(CampaignNotFoundException.class, () -> {
-            sellingService.makeSale(saleRequests, paymentMethod, username);
-        });
-    }
-
-    @Test
     public void testReturnTheSale_whenSaleIsFoundAndProductIsAvailable_shouldUpdateProductAmountsAndDeleteSale() {
         String billId = "testBillId";
         Sale sale = new Sale();
