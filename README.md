@@ -45,6 +45,23 @@ It creates bills for given sales. Could be used for search operations. Sorting, 
 
 ## How To Use It
 You can access an api link to communicate project with using postman. Examples are given below:
+### API LINKS
+- localhost:8088/sales/createbill?billId=
+- localhost:8088/sales?pageNo=0&pageSize=2&field=saleDate&cashierName=ozgur
+- localhost:8088/selling/delete/e9d4ea67-2de3-4205-860b-6f2f1ac78201
+- localhost:8088/selling/makesale
+- localhost:8088/campaign
+- localhost:8088/campaign/create
+- localhost:8088/campaign/delete
+- localhost:8088/product-modify/create
+- localhost:8088/product-modify/update
+- localhost:8088/product-modify/delete
+- localhost:8088/product
+- localhost:8088/users
+- localhost:8088/users/register?rolename=
+- localhost:8088/users/update
+- localhost:8088/users/delete
+- localhost:8088/auth/token
 ![image](https://github.com/berkaykopuz/market/assets/103936811/703d60ba-fc1f-4c42-8a1c-bbba74f841b8)
 ![image](https://github.com/berkaykopuz/market/assets/103936811/168d6626-86ff-44fc-8dc8-68327263ce82)
 ![image](https://github.com/berkaykopuz/market/assets/103936811/dd1ec2b4-fd61-4813-91b8-3b90976a755c)
