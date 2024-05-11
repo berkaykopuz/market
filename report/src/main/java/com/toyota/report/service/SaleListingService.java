@@ -50,10 +50,13 @@ public class SaleListingService {
      */
     public Page<Sale> getSalesWithPaginationAndSortingByDate(int pageNumber, int pageSize, String field,
                                                        int year, int month, int day){
+        logger.debug("Received request to get sales with pagination and sorting by date");
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
 
         Page<Sale> sales = saleRepository.findBySaleDate(year, month, day, pageable);
 
+        logger.info("Returning sales for the specified date");
         return sales;
     }
 
@@ -68,10 +71,13 @@ public class SaleListingService {
      */
     public Page<Sale> getSalesWithPaginationAndSortingByCashierName(int pageNumber, int pageSize, String field,
                                                              String cashierName){
+        logger.debug("Received request to get sales with pagination and sorting by cashier name");
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
 
         Page<Sale> sales = saleRepository.findByCashierName(cashierName, pageable);
 
+        logger.info("Returning sales for the specified cashier");
         return sales;
     }
 
@@ -85,10 +91,13 @@ public class SaleListingService {
      */
     public Page<Sale> getAllSalesWithPaginationAndSorting(int pageNumber, int pageSize, String field){
 
+        logger.debug("Received request to get all sales with pagination and sorting");
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(field));
 
         Page<Sale> sales = saleRepository.findAll(pageable);
 
+        logger.info("Returning all sales");
         return sales;
     }
     /**
@@ -99,6 +108,8 @@ public class SaleListingService {
      * @throws SaleNotFoundException if the sale with the given bill ID is not found.
      */
     public Sale getSale(String billId){
+        logger.debug("Received request to get sale with id: " + billId);
+
         Sale sale = saleRepository.findById(billId)
                 .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + billId));
 
@@ -114,6 +125,8 @@ public class SaleListingService {
      * @throws IOException If there is an input/output error during the PDF creation process.
      */
     public void createBillForSale(HttpServletResponse response, String billId) throws IOException {
+        logger.debug("Received request to create bill for sale with id: " + billId);
+
         Sale sale = getSale(billId);
 
         Document document = new Document(PageSize.A4);

@@ -45,6 +45,7 @@ public class SellingService {
      * @return A string message indicating the result of the sale process.
      */
     public String makeSale(List<SaleRequest> saleRequests, PaymentMethod paymentMethod, String username){
+        logger.debug("Starting sale process for cashier: " + username);
         double totalPrice = 0;
         double paidPrice = 0;
         long campaignId;
@@ -54,10 +55,13 @@ public class SellingService {
 
         for(SaleRequest s : saleRequests){
             Product product = productRepository.findById(s.getProductId())
-                    .orElseThrow(() -> new ProductNotFoundException("Requested product has not found."));
+                    .orElseThrow(() -> {
+                        logger.error("Requested product not found");
+                        return new ProductNotFoundException("Requested product has not found.");
+                    });
 
             if(s.getRequestedAmount() > product.getAmount()){
-                logger.warn("Requested amount must not be higher than available value.");
+                logger.error("Requested amount must not be higher than available value.");
                 throw new BadSaleRequestException("Requested amount must not be higher than available stock.");
             }
 
@@ -100,7 +104,7 @@ public class SellingService {
                 }
                 else{
                     productSale.setUsedCampaign("Campaign Not Implemented");
-                    logger.warn("Requested campaign's date is expired.");
+                    logger.error("Requested campaign's date is expired.");
                     throw new CampaignNotFoundException("Requested campaign's date is expired.");
                 }
 
@@ -120,8 +124,7 @@ public class SellingService {
         sale.setCashierName(username);
         saleRepository.save(sale);
 
-        logger.info("Requested sale has completed");
-
+        logger.info("Sale process completed successfully");
         return "Sale is made.";
     }
 
@@ -137,6 +140,7 @@ public class SellingService {
      * @throws ProductNotFoundException If a product in the sale is not found.
      */
     public String returnTheSale(String billId){
+        logger.debug("Starting return process for sale with id: " + billId);
         Sale sale = saleRepository.findById(billId)
                 .orElseThrow(() -> new SaleNotFoundException("Sale not found with id: " + billId));
 
@@ -148,13 +152,15 @@ public class SellingService {
                 product.setAmount(newAmount);
 
                 productRepository.save(product);
+                logger.info("Product stock updated for product id: " + product.getId());
             }else{
-                logger.warn("Product not found");
+                logger.error("Product not found for product sale id: " + ps.getId());
                 throw new ProductNotFoundException("Product not found");
             }
         }
 
         saleRepository.delete(sale);
+        logger.info("Sale returned successfully for sale id: " + billId);
 
         return "Sale is returned with id: " + billId;
     }

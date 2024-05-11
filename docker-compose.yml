@@ -30,7 +30,7 @@ services:
     image: gateway:latest
     container_name: gateway
     volumes:
-      - /app/logs
+      - ./logs:/app/logs
     ports:
       - "8088:8088"
     expose:
@@ -49,7 +49,7 @@ services:
     container_name: user-management
     image: user-management:latest
     volumes:
-      - /app/logs
+      - ./logs:/app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -62,7 +62,7 @@ services:
     container_name: product
     image: product:latest
     volumes:
-      - /app/logs
+      - ./logs:/app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -76,7 +76,7 @@ services:
     container_name: selling
     image: selling:latest
     volumes:
-      - /app/logs
+      - ./logs:/app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -90,7 +90,7 @@ services:
     container_name: report
     image: report:latest
     volumes:
-      - /app/logs
+      - ./logs:/app/logs
       - /app/images
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
@@ -105,7 +105,7 @@ services:
     container_name: token
     image: token:latest
     volumes:
-      - /app/logs
+      - ./logs:/app/logs
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/marketdb
     depends_on:
@@ -113,8 +113,51 @@ services:
       - eureka-server
     build: ./token
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
+    container_name: elasticsearch_springboot
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.3.3
+    container_name: kibana_springboot
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.3.3
+    container_name: logstash_springboot
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logs:/app/logs
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    environment:
+        LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
 
 networks:
   market:
     driver: bridge
+
+volumes:
+  elasticsearch_data:
+    driver: local

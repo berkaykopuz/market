@@ -26,6 +26,8 @@ public class ProductService {
      * @return product
      */
     public ProductDto createProduct(ProductDto productDto){
+        logger.debug("Received request to create a new product");
+
         if (    productDto.name() == null ||
                 productDto.amount() == null ||
                 productDto.price() == null ||
@@ -42,7 +44,7 @@ public class ProductService {
             throw new BadProductRequestException("Invalid product data. All fields must be valid.");
         }
 
-
+        logger.info("Creating new product object");
         Product product = new Product();
         product.setName(productDto.name());
         product.setAmount(productDto.amount());
@@ -50,16 +52,26 @@ public class ProductService {
         product.setCategory(productDto.category());
         product.setUpdatedDate(LocalDateTime.now().plusHours(3));
 
-        logger.info("Creating new product object");
+        logger.info("Saving new product to the repository");
         return ProductDto.convert(productRepository.save(product));
     }
 
+    /**
+     * Updates the product with the given ID using the provided ProductDto object.
+     *
+     * @param productId The ID of the product to be updated.
+     * @param updatedProductDto A ProductDto object containing the updated product details.
+     * @return A ProductDto object of the updated product.
+     * @throws ProductNotFoundException if no product with the given ID is found.
+     */
     public ProductDto updateProduct(Long productId, ProductDto updatedProductDto){
+        logger.debug("Received request to update product with id: " + productId);
         Optional<Product> product = productRepository.findById(productId);
 
         if(product.isPresent()){
             Product existingProduct = product.get();
 
+            logger.info("Updating product object");
             existingProduct.setName(updatedProductDto.name());
             existingProduct.setAmount(updatedProductDto.amount());
             existingProduct.setPrice(updatedProductDto.price());
@@ -68,15 +80,25 @@ public class ProductService {
 
             Product updatedProduct = productRepository.save(existingProduct);
 
+            logger.info("Product updated successfully");
             return ProductDto.convert(updatedProduct);
         }
 
         else{
+            logger.error("Product not found with id: " + productId);
             throw new ProductNotFoundException("Product not found with id: " + productId);
         }
     }
 
+    /**
+     * Deletes the product with the given ID.
+     *
+     * @param productId The ID of the product to be deleted.
+     * @return A string message indicating the result of the deletion operation.
+     */
     public String deleteProduct(Long productId) {
+        logger.info("Received request to delete product with id: " + productId);
+
         if(productRepository.existsById(productId)){
             productRepository.deleteById(productId);
             logger.info("Product deleted");

@@ -39,6 +39,7 @@ public class ProductService {
      * @return product
      */
     public ProductDto getProductById(Long productId){
+        logger.debug("Received request to get product with id: " + productId);
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new ProductNotFoundException("product not found with id: " + productId));
 

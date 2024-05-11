@@ -39,6 +39,8 @@ public class CampaignService {
      * @throws BadCampaignRequestException If any required fields are missing, invalid, or if the discount rate is not within the valid range, or if the campaign dates are not in the correct order or before the current time.
      */
     public CampaignDto createCampaign(CampaignDto campaignDto){
+        logger.debug("Received request to create campaign");
+
         if (    campaignDto.name() == null ||
                 campaignDto.campaignType() == null ||
                 campaignDto.discountRate() == null ||
@@ -69,7 +71,7 @@ public class CampaignService {
             throw new BadCampaignRequestException("Campaign dates must not before now");
         }
 
-
+        logger.info("Creating new campaign object");
         Campaign campaign = new Campaign();
         campaign.setName(campaignDto.name());
         campaign.setStartDate(campaignDto.startDate());
@@ -77,6 +79,7 @@ public class CampaignService {
         campaign.setCampaignType(campaignDto.campaignType());
         campaign.setDiscountRate(campaignDto.discountRate());
 
+        logger.info("Saving campaign object to the repository");
         return CampaignDto.convert(campaignRepository.save(campaign));
     }
 
@@ -88,8 +91,8 @@ public class CampaignService {
      */
     public String deleteCampaign(Long campaignId) {
         if(campaignRepository.existsById(campaignId)){
-            campaignRepository.deleteById(campaignId);
             logger.info("Campaign deleted");
+            campaignRepository.deleteById(campaignId);
             return "Campaign deleted";
         }
         else{

@@ -30,7 +30,7 @@ public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Conf
         return ((exchange, chain) -> {
             if (validator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    logger.warn("Missing authorization header. Access denied");
+                    logger.error("Missing authorization header. Access denied");
                     throw new UnauthorizedException("Missing authorization header. Access denied");
                 }
 
@@ -44,14 +44,14 @@ public class ReportFilter extends AbstractGatewayFilterFactory<ReportFilter.Conf
 
                     // check if user has MANAGER role
                     if (!jwtUtil.getRolesFromToken(authHeader).contains("MANAGER")) {
-                        logger.warn("User does not have MANAGER role. Access denied");
+                        logger.error("User does not have MANAGER role. Access denied");
                         throw new UnauthorizedException("User does not have MANAGER role. Access denied");
                     }
 
                     logger.info("Token has verified.");
 
                 } catch (Exception e) {
-                    logger.warn("Invalid access..!");
+                    logger.error("Invalid access..!");
                     System.out.println("invalid access...!");
                     throw e;
                 }
